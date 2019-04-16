@@ -14,7 +14,7 @@ namespace MVC5FullCalandarPlugin.Controllers
     public class DayEventsController : Controller
     {
         [HttpPost]
-        public string SetTimeAndEvent(string events, string hour, string date, string token)
+        public string AddTimeAndEvent(string events, string description, string hour, string date, string token)
         {
             var userService = new UserService();
 
@@ -22,35 +22,95 @@ namespace MVC5FullCalandarPlugin.Controllers
             var user = Storage.getInstance().GetUser(email);
 
             var startDate = date + " " + "00:00";
+            var id = DateTime.Now.GetHashCode().ToString();
 
             var eventHoliday = new PublicHoliday
             {
-                Description = events,
+                Id = id,
+                Description = description,
                 Start_Date = startDate,
                 End_Date = date,
                 Time = hour,
                 Title = events
             };
 
-            user.PublicHolidays.Add(eventHoliday);
+            if (user.Days.Any(x => x.Date == date))
+            {
+                user.Days.First(x => x.Date == date).PublicHolidays.Add(eventHoliday);
+            }
+            else
+            {
+                user.Days.Add(new DayModel()
+                {
+                    Date = date,
+                    PublicHolidays = new List<PublicHoliday>()
+                    {
+                        eventHoliday
+                    }
+                });
+            }
+
             userService.UpdateUser(user);
-           //SessionStateMode.
-           //var z = Session["hhhhhhh@mail.ru"];
-         //  Session["hhhhhhh@mail.ru"] = "eee";
-           //HttpContext.Response.Cookies["hhhhhhh@mail.ru"].Value = "hz";
-           //var p = HttpContext.Request.Cookies["hhhhhhh@mail.ru"];
-           //bool w = a.Login("hhhhhhh@mail.ru", "vlad");
+      
+            return id;
+        }
 
+        [HttpPost]
+        public void ChangeTimeAndEvent(string title, string description, string time, string date, string token, string id)
+        {
+            var userService = new UserService();
 
-            //using (StreamWriter sw = new StreamWriter("C:\\Users\\user\\Desktop\\MVC5FullCalandarPlugin\\MVC5FullCalandarPlugin\\Content\\files\\PublicHoliday.txt", true, System.Text.Encoding.Default))
-            //{
-            //    var s = "0," + events + "," + events + "," + date + " 09:00," + date;
-            //    sw.WriteLine(s);
+            var email = TokenService.getEmailWithToken(token);
+            var user = Storage.getInstance().GetUser(email);
+            var dat = user.Days.First(x => x.Date == date);
+            var holy = dat.PublicHolidays.First(x => x.Id == id);
 
-            //    sw.Dispose();
-            //    sw.Close();
-            //}
-            return "ww";
+            holy.Time = time;
+            holy.Description = description;
+            holy.Title = title;
+
+            userService.UpdateUser(user);
+        }
+
+        [HttpGet]
+        public string GetAllTimeInDay(string date, string token)
+        {
+            var service = new UserService();
+            var user = service.GetUser(TokenService.getEmailWithToken(token));
+            return user.Days.FirstOrDefault(x => x.Date == date).AllTime;
+        }
+
+        public ActionResult GetEvent(string token, string date, string id)
+        {
+            if (token != "null" && token != null)
+            {
+                var email = TokenService.getEmailWithToken(token);
+
+                // Initialization.
+                JsonResult result = new JsonResult();
+
+                try
+                {
+                    //dynamic jsonData = JsonConvert.DeserializeObject<dynamic>(rawJsonStr);
+                    // Loading.
+                    List<DayModel> data = Storage.getInstance().GetUser(email).Days;
+                    var day = data.First(x => x.Date == date);
+                    var holy = day.PublicHolidays.First(x => x.Id == id);
+
+                    // Processing.
+                    result = this.Json(holy, JsonRequestBehavior.AllowGet);
+                }
+                catch (Exception ex)
+                {
+                    // Info
+                    Console.Write(ex);
+                }
+
+                // Return info.
+                return result;
+            }
+
+            return null;
         }
     }
 }

@@ -252,3 +252,7 @@
         width: 100%;
     }
 }
+
+.fc-event-container {
+    cursor: pointer;
+}

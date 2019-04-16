@@ -10,6 +10,8 @@ using System.Web;
 using System.Web.Mvc;
 using Firebase.Auth;
 using MVC5FullCalandarPlugin.FireBase;
+using MVC5FullCalandarPlugin.FireBase.Users;
+using Newtonsoft.Json;
 
 namespace MVC5FullCalandarPlugin.Controllers
 {
@@ -49,9 +51,9 @@ namespace MVC5FullCalandarPlugin.Controllers
 
                 try
                 {
-
+                    //dynamic jsonData = JsonConvert.DeserializeObject<dynamic>(rawJsonStr);
                     // Loading.
-                    List<PublicHoliday> data = Storage.getInstance().GetUser(email).PublicHolidays;
+                    List<DayModel> data = Storage.getInstance().GetUser(email).Days;
 
                     // Processing.
                     result = this.Json(data, JsonRequestBehavior.AllowGet);

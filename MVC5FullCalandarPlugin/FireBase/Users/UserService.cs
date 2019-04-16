@@ -55,7 +55,7 @@ namespace MVC5FullCalandarPlugin.FireBase.Users
             //{
             //    Email = "ru@mail.ru",
             //    FirstName = "pop",
-            //    PublicHolidays = l
+            //    Days = l
             //};
             //SetResponse response = Client.Set("Users/" + UpdateInGoodString(n.Email), n);
 

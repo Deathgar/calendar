@@ -5,6 +5,7 @@ namespace MVC5FullCalandarPlugin.Models
 {
     public class PublicHoliday
     {
+        public string Id { get; set; }
         public string Time { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

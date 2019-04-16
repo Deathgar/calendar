@@ -47,5 +47,6 @@ namespace MVC5FullCalandarPlugin.FireBase
         {
             users.Remove(GetUser(email));
         }
+
     }
 }

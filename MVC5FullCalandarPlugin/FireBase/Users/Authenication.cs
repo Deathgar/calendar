@@ -22,7 +22,7 @@ namespace MVC5FullCalandarPlugin.FireBase.Users
             {
                 Email = email,
                 FirstName = firstName,
-                PublicHolidays = new List<PublicHoliday>()
+                Days = new List<DayModel>()
             };
 
             var crud = new UserService();
