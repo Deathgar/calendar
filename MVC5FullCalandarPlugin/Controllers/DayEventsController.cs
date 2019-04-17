@@ -14,7 +14,7 @@ namespace MVC5FullCalandarPlugin.Controllers
     public class DayEventsController : Controller
     {
         [HttpPost]
-        public string AddTimeAndEvent(string events, string description, string hour, string date, string token)
+        public string AddTimeAndEvent(string title, string description, string time, string date, string token)
         {
             var userService = new UserService();
 
@@ -30,9 +30,14 @@ namespace MVC5FullCalandarPlugin.Controllers
                 Description = description,
                 Start_Date = startDate,
                 End_Date = date,
-                Time = hour,
-                Title = events
+                Time = time,
+                Title = title
             };
+
+            if (user.Days == null)
+            {
+                user.Days = new List<DayModel>();
+            }
 
             if (user.Days.Any(x => x.Date == date))
             {
@@ -56,7 +61,7 @@ namespace MVC5FullCalandarPlugin.Controllers
         }
 
         [HttpPost]
-        public void ChangeTimeAndEvent(string title, string description, string time, string date, string token, string id)
+        public string ChangeTimeAndEvent(string title, string description, string time, string date, string token, string id)
         {
             var userService = new UserService();
 
@@ -70,6 +75,8 @@ namespace MVC5FullCalandarPlugin.Controllers
             holy.Title = title;
 
             userService.UpdateUser(user);
+
+            return id;
         }
 
         [HttpGet]
@@ -77,7 +84,8 @@ namespace MVC5FullCalandarPlugin.Controllers
         {
             var service = new UserService();
             var user = service.GetUser(TokenService.getEmailWithToken(token));
-            return user.Days.FirstOrDefault(x => x.Date == date).AllTime;
+            string str = user.Days.FirstOrDefault(x => x.Date == date).AllTime;
+            return str;
         }
 
         public ActionResult GetEvent(string token, string date, string id)
@@ -111,6 +119,25 @@ namespace MVC5FullCalandarPlugin.Controllers
             }
 
             return null;
+        }
+
+        private int i = 0;
+
+        [HttpPost]
+        public string Delete(string id, string date ,string token)
+        {
+            
+            var us = new UserService();
+            i++;
+
+            var email = TokenService.getEmailWithToken(token);
+            var user = Storage.getInstance().GetUser(email);
+            var day = user.Days.First(x => x.Date == date);
+            day.PublicHolidays.Remove(day.PublicHolidays.First(x => x.Id == id));
+
+            us.UpdateUser(user);
+
+            return id;
         }
     }
 }

@@ -43,80 +43,77 @@ $(document).ready(function () {
         },
 
         dayClick: function (info) {
+	      
+            addEvent(moment(info._d).format('YYYY-MM-DD'));
 
-            console.log(info);
-            Event(info.year() + "-" + ((info.month() < 9) ? ("0" + (info.month()+1)) : info.month()) + "-" + ((info.date() < 10) ? ("0" + info.date()) : info.date()));
-           // $('#hiddenInfo').val(info.data);
-           //sessionStorage.setItem("ww", "wwwww");
-            //console.log(sessionStorage.getItem("ww"));
-            //localStorage.setItem("ww", "ee");
-           
         },
 
         eventClick: function(info) {
-	        GetEventInfo(info);
+	        ChangeEventInfo(info);
         },
        
 
 
         events: function (start, end, timezone, callback) {
             var token = localStorage.getItem("token");
-	        $.ajax({
-		        url: '/Home/GetCalendarData',
-		        type: "GET",
-		        data:
-		        {
-                    token: token
-		        },
+	            $.ajax({
+		            url: '/Home/GetCalendarData',
+		            type: "GET",
+		            data:
+		            {
+			            token: token
+		            },
 
-		        success: function (result) {
-                    var events = [];
-                 
-                    //$('[data-date="2019-04-16"]').filter('.fc-day').html('<div style="max-height: 100%; height: 100%; max-width: 100%; text-align: right; margin-top: 0;"><div style="margin-top: 10%;">8</div></div>');
-                    $.each(result, function (i, data) {
+		            success: function(result) {
+			            var events = [];
 
-                        if (data.AllTime < 4) {
-	                        events.push(
-		                        {
-			                        start: moment(data.Date).format('YYYY-MM-DD'),
-                                    end: moment(data.Date).format('YYYY-MM-DD'),
-			                        rendering: 'background',
-			                        color: 'green'
-		                        });
-                        }
-                        if (data.AllTime > 7) {
-	                        events.push(
-		                        {
-                                    start: moment(data.Date).format('YYYY-MM-DD'),
-                                    end: moment(data.Date).format('YYYY-MM-DD'),
-			                        rendering: 'background',
-			                        color: 'red'
-		                        });
-                        }
+			            //$('[data-date="2019-04-16"]').filter('.fc-day').html('<div style="max-height: 100%; height: 100%; max-width: 100%; text-align: right; margin-top: 0;"><div style="margin-top: 10%;">8</div></div>');
+			            $.each(result,
+				            function(i, data) {
 
-                        $.each(data.PublicHolidays,
-                            function (i, newData) {
-	                            
-	                            events.push(
-			                        {
-				                        title: newData.Title,
-				                        description: newData.Desc,
-                                        start: moment(newData.Start_Date).format('YYYY-MM-DD'),
-                                        end: moment(newData.End_Date).format('YYYY-MM-DD'),
-                                        allDay: true,
-				                        backgroundColor: "#9501fc",
-                                        borderColor: "#494949",
-                                        id: newData.Id
-			                        });
+					            if (data.AllTime < 4) {
+						            events.push(
+							            {
+								            start: moment(data.Date).format('YYYY-MM-DD'),
+								            end: moment(data.Date).format('YYYY-MM-DD'),
+								            rendering: 'background',
+								            color: 'green'
+							            });
+					            }
+					            if (data.AllTime > 7) {
+						            events.push(
+							            {
+								            start: moment(data.Date).format('YYYY-MM-DD'),
+								            end: moment(data.Date).format('YYYY-MM-DD'),
+								            rendering: 'background',
+								            color: 'red'
+							            });
+					            }
 
-	                        });
-                       
-                        
-                    });
-                    console.log(events);
-                    callback(events);
-                }
-            });
+					            $.each(data.PublicHolidays,
+						            function(i, newData) {
+
+							            events.push(
+								            {
+									            title: newData.Title,
+									            description: newData.Desc,
+									            start: moment(newData.Start_Date).format('YYYY-MM-DD'),
+									            end: moment(newData.End_Date).format('YYYY-MM-DD'),
+									            allDay: true,
+									            backgroundColor: "#9501fc",
+									            borderColor: "#494949",
+									            id: newData.Id
+								            });
+
+						            });
+
+
+				            });
+			            // console.log(events);
+			            callback(events);
+		            }
+	            });
+            
         },
 
         eventRender: function (event, element) {
@@ -128,12 +125,13 @@ $(document).ready(function () {
         },
 
         editable: false
-    });
+        });
+    
 
 });
 
 function GetEventInfo(info) {
-    console.log();
+   // console.log();
     $.ajax({
 	    url: "/DayEvents/GetEvent",
 	    type: "GET",
@@ -145,7 +143,7 @@ function GetEventInfo(info) {
 	    },
 	    success: function(request) {
 
-		    console.log(request);
+		   // console.log(request);
 
             var title = request.Title;
 		    var time = request.Time;
@@ -183,6 +181,11 @@ function GetEventInfo(info) {
                             },
                             success: function (request) {
                                 swal("", "Good job", "success");
+                                console.log(request)
+                               // var z = $("#calendar").fullCalendar('clientEvents', request);
+                                $("#calendar").fullCalendar('removeEvents', request);
+
+                              //  console.log(z);
 
                                 var event = {
                                     title: titleName,
@@ -204,7 +207,6 @@ function GetEventInfo(info) {
                                     },
                                     success:
                                         function (req) {
-
                                             var eventColor = {
                                                 start: date,
                                                 end: date,
@@ -259,6 +261,8 @@ function GetEventInfo(info) {
 }
 
 function Event(date) {
+
+
     swal({
         showCancelButton: true,
         closeOnConfirm: false,
@@ -347,11 +351,11 @@ function Event(date) {
                   
 
                     //$('[data-date="2019-04-16"]').css('backgroundColor', 'yellow');
-                    
-                    $('#calendar').fullCalendar('renderEvent', event, true);
                     console.log(event);
+                    $('#calendar').fullCalendar('renderEvent', event, true);
+                   // console.log(event);
                    
-                    var token = localStorage.getItem("token");
+                    
 
                 }
             }).fail(function () {

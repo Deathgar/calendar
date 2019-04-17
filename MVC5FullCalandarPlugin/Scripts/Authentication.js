@@ -1,5 +1,5 @@
 ﻿$(document).ready(function() {
-    if (localStorage.getItem("token") == "null" || localStorage.getItem("token") == null) {
+    if (localStorage.getItem("token") == "null" || localStorage.getItem("token") == null || localStorage.getItem('token') === "") {
 	    $('.authorize').css("display", "none");
         $('.noneAuthorize').css("display", "block");
     } else {
@@ -30,24 +30,27 @@ $("#logOut").click(function() {
 
 $("#loginButton").click(function () {
 	var vEmail = $('#emailLog').val();
-	var vPassword = $('#passwordLog').val();
+    var vPassword = $('#passwordLog').val();
 
-	$.ajax({
-		url: "/Authentication/Login",
-		type: "POST",
-		data:
-		{
-			"email": vEmail,
-			"password": vPassword
-		},
-		success: function(request) {
-			localStorage.setItem("token", request);
-			localStorage.setItem("email", vEmail);
-			var url = '/Home/Index';
-            window.location.href = url;
-           
-		}
-	});
+    if ((vEmail != null || vEmail != "null") && (vPassword != null || vPassword != "null")) {
+
+	    $.ajax({
+		    url: "/Authentication/Login",
+		    type: "POST",
+		    data:
+		    {
+			    "email": vEmail,
+			    "password": vPassword
+		    },
+		    success: function(request) {
+			    localStorage.setItem("token", request);
+			    localStorage.setItem("email", vEmail);
+			    var url = '/Home/Index';
+			    window.location.href = url;
+
+		    }
+	    });
+    }
 });
 
 $("#registerButton").click(function() {

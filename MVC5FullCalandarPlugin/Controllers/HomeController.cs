@@ -42,7 +42,7 @@ namespace MVC5FullCalandarPlugin.Controllers
         public ActionResult GetCalendarData(string token)
         {
 
-            if (token != "null" && token != null)
+            if (token != "null" && !string.IsNullOrEmpty(token))
             {
                 var email = TokenService.getEmailWithToken(token);
 
@@ -54,7 +54,7 @@ namespace MVC5FullCalandarPlugin.Controllers
                     //dynamic jsonData = JsonConvert.DeserializeObject<dynamic>(rawJsonStr);
                     // Loading.
                     List<DayModel> data = Storage.getInstance().GetUser(email).Days;
-
+                    data.RemoveAll(x => x == null);
                     // Processing.
                     result = this.Json(data, JsonRequestBehavior.AllowGet);
                 }
