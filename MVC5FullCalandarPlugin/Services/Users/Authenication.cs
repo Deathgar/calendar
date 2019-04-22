@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using Firebase.Auth;
 using Firebase.Storage;
 using MVC5FullCalandarPlugin.Models;
@@ -65,7 +66,7 @@ namespace MVC5FullCalandarPlugin.Services.Users
         }
 
         //mb not need
-        public async void LogOut(string token)
+        public void LogOut(string token)
         {
             var stream = File.Open(@"C:\Users\user\Desktop\knowledge_graph_logo.png", FileMode.Open);
 
@@ -75,10 +76,8 @@ namespace MVC5FullCalandarPlugin.Services.Users
 
            
             task.Progress.ProgressChanged += (s, e) => Console.WriteLine($"Progress: {e.Percentage} %");
-            var downloadUrl = await task;
 
             storageUsers.Delete(TokenService.getEmailWithToken(token));
-            //mb redirect
         }
 
     }

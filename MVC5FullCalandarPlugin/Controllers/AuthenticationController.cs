@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using MVC5FullCalandarPlugin.Services.Interfaces;
@@ -16,11 +17,9 @@ namespace MVC5FullCalandarPlugin.Controllers
 
         private IAuthenication authenicationService;
 
-        public AuthenticationController()
+        public AuthenticationController(Authenication auth)
         {
-            IKernel ninjectKernel = new StandardKernel();
-            ninjectKernel.Bind<IAuthenication>().To<Authenication>();
-            authenicationService = ninjectKernel.Get<IAuthenication>();
+            authenicationService = auth;
         }
 
         public ActionResult Index()
@@ -45,7 +44,7 @@ namespace MVC5FullCalandarPlugin.Controllers
         }
 
         [HttpPost]
-        public async void LogOut(string token)
+        public void LogOut(string token)
         {
             authenicationService.LogOut(token);
         }

@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Firebase.Storage;
 using MVC5FullCalandarPlugin.Models;
 using MVC5FullCalandarPlugin.Services;
 using MVC5FullCalandarPlugin.Services.Interfaces;
 using MVC5FullCalandarPlugin.Services.Users;
 using Ninject;
+using Ninject.Activation;
+
 
 namespace MVC5FullCalandarPlugin.Controllers
 {
@@ -16,15 +21,20 @@ namespace MVC5FullCalandarPlugin.Controllers
     {
         private IUserDbSet storageUsers;
 
-        public DayEventsController()
+        public DayEventsController(IUserDbSet storage)
         {
-            IKernel ninjectKernel = new StandardKernel();
-            ninjectKernel.Bind<IUserDbSet>().To<Storage>();
-            storageUsers = ninjectKernel.Get<IUserDbSet>();
+            storageUsers = storage;
         }
 
         [HttpPost]
-        public string AddTimeAndEvent(string title, string description, string time, string date, string token)
+        public void AddImage()
+        {
+            var wd = Request.Files["id"];
+            UploadImage(new PublicHoliday(), Request.Files[0]).Wait();
+        }
+
+        [HttpPost]
+        public string AddTimeAndEvent(string title, string description, string time, string date, string token, HttpPostedFileBase image)
         {
             var email = TokenService.getEmailWithToken(token);
             var user = storageUsers.Get(email);
@@ -41,6 +51,13 @@ namespace MVC5FullCalandarPlugin.Controllers
                 Time = time,
                 Title = title
             };
+
+            
+
+            if (image != null)
+            {
+                UploadImage(eventHoliday, image).Wait();
+            }
 
             if (user.Days == null)
             {
@@ -68,9 +85,34 @@ namespace MVC5FullCalandarPlugin.Controllers
             return id;
         }
 
-        [HttpPost]
-        public string ChangeTimeAndEvent(string title, string description, string time, string date, string token, string id)
+        private async Task<string> UploadImage(PublicHoliday holy, HttpPostedFileBase imagePath)
         {
+            var id = DateTime.Now.GetHashCode() + "";
+
+            var path = @"D:/Files/" + imagePath.FileName;
+
+            imagePath.SaveAs(path);
+
+            var stream = System.IO.File.Open(path, FileMode.Open);
+
+            var task = new FirebaseStorage("testcalendar-27287.appspot.com")
+                .Child(id)
+                .PutAsync(stream);
+
+
+             var f = await task;
+
+             holy.Image.Id = id;
+             holy.Image.Url = f;
+
+             return f;
+        }
+
+        [HttpPost]
+        public string ChangeTimeAndEvent(string title, string description, string time, string date, string token, string id, HttpPostedFileBase image)
+        {
+           
+            
             var email = TokenService.getEmailWithToken(token);
             var user = storageUsers.Get(email);
             var dat = user.Days.First(x => x.Date == date);
@@ -79,6 +121,11 @@ namespace MVC5FullCalandarPlugin.Controllers
             holy.Time = time;
             holy.Description = description;
             holy.Title = title;
+
+            if (image != null)
+            {
+                UploadImage(holy, image).Wait();
+            }
 
             storageUsers.Update(user);
 

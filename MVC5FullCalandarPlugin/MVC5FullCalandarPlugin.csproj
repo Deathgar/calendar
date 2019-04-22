@@ -280,6 +280,8 @@
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\SweetController.cs" />
     <Compile Include="FireBase\Security.cs" />
+    <Compile Include="Models\ImageHTML.cs" />
+    <Compile Include="Services\Injection\NinjectStorageReg.cs" />
     <Compile Include="Services\Interfaces\IAuthenication.cs" />
     <Compile Include="Services\Interfaces\IUserDbSet.cs" />
     <Compile Include="Services\Users\Storage.cs" />

@@ -3,8 +3,26 @@ function addEvent(date) {
     $('#myLoginModal').modal('show');
     $('#hiddenDate').val(date);
     $('#deleteEvent').css("display", "none");
+    $('#addEvent').css("display", "inline-block");
+    $('#changeEvent').css("display", "none");
+    $('#imageDay').css("display", "none");
 }
 
+function addImage() {
+    var image = $('#imageButton')[0].files[0];
+    var formData = new FormData();
+    formData.append("img", image);
+    formData.append("id", "dawdwad");
+
+	$.ajax({
+        url: "/DayEvents/AddImage",
+        dataType: 'json',
+        contentType: false,
+        processData: false,
+		type: "POST",
+		data: formData,
+	});
+};
 
 
 $('#addEvent').click(function () {
@@ -15,21 +33,24 @@ $('#addEvent').click(function () {
     var token = localStorage.getItem("token");
     var date = $('#hiddenDate').val();
 
-    console.log(date);
+    var image;
+
+    console.log($('#imageButton')[0].files[0]);
+
 
     if (title && !isNaN(time) && time < 24 && time > 0) {
 
         $.ajax({
             url: "/DayEvents/AddTimeAndEvent",
             type: "POST",
+            dataType: 'json',
             data:
             {
                 "title": title,
                 "time": time,
                 "date": date,
                 "description": description,
-                "token": token
-
+                "token": token,
             },
 
             success: function (request) {
@@ -95,24 +116,32 @@ $('#addEvent').click(function () {
         });
     }
     $('#myLoginModal').modal('hide');
+
+
+    if ($('#imageButton').val() !== "") {
+	    addImage();
+    }
 });
+
 
 $(function() {
 	$('#myLoginModal').on('hidden.bs.modal',
 		function() {
 
-			console.log("dzzzzz");
-
 			$('#time').val("");
 			$('#title').val('');
             $('#description').text("");
             $('#deleteEvent').css("display", "inline-block");
+
 		});
 });
 
 
 function ChangeEventInfo(info) {
-	
+
+	$('#addEvent').css("display", "none");
+	$('#changeEvent').css("display", "inline-block");
+
     $('#hiddenInfo').val(info.id);
     $('#hiddenDate').val(info.start._i);
 
@@ -132,15 +161,50 @@ function ChangeEventInfo(info) {
         success: function (request) {
 
 			$('#myLoginModal').modal('show');
-
+            
 			$('#title').val(request.Title);
             $('#time').val(request.Time);
             $('#description').text(request.Description);
-
-            
-		}
+            console.log(request.Image.Url);
+            $('#imageDay').attr("src", request.Image.Url);
+        }
 	});
 }
+
+/*
+ * string title, string description, string time, string date, string token, string id, string image = null)
+ */
+$('#changeEvent').click(function () {
+
+    var date = $('#hiddenDate').val();
+    var token = localStorage.getItem("token");
+
+    if ($('#imageButton').val()) {
+	    image = "null";
+    } else {
+	    image = $('#imageButton').val();
+    }
+
+	$.ajax({
+		url: "/DayEvents/ChangeTimeAndEvent",
+		type: "POST",
+		data:
+		{
+			"title": $('#title').val(),
+			"description": $('#description').val(),
+			"time": $('#time').val(),
+			"date": date,
+			"token": token,
+            "id": $('#hiddenInfo').val(),
+            "image": image
+		},
+        success: function () {
+			console.log("pppp");
+		}
+    });
+	RenderingDay(date, token);
+	$('#myLoginModal').modal('hide');
+});
 
 $('#deleteEvent').click(function () {
 

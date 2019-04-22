@@ -7,7 +7,7 @@ using MVC5FullCalandarPlugin.Models;
 
 namespace MVC5FullCalandarPlugin.Services.Interfaces
 {
-    interface IUserDbSet
+    public interface IUserDbSet
     {
         void Add(User user);
         void Delete(string email);

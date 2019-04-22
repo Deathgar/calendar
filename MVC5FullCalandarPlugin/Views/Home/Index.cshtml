@@ -22,14 +22,13 @@
                                     
                                     <div id="imageNone" style="display: flex; flex-direction: column; justify-content: center; margin-top: 10px;">
                                         <a >
-                                            <img src="https://webref.ru/assets/images/html5-css3/img-04.jpg" style="width: 100%;  height: 100%; object-fit: cover;" />
-                                          
+                                            <img id="imageDay" src="https://webref.ru/assets/images/html5-css3/img-04.jpg" style="width: 100%;  height: 100%; object-fit: cover;" />
                                         </a>
                                                                                                                                                                                                                                                                    
                                                                                                                                                                                                                                                                     
                                     <div id="imageNone" style="display: flex; flex-direction: row; justify-content: center; margin-top: 10px;">
                                         <label class="btn btn-default center">
-                                            Image <input type="file" style="display: none">
+                                            Image <input id="imageButton" type="file" style="display: none">
                                         </label>
                                     </div>
                                     </div>
@@ -37,6 +36,7 @@
                                     <div style="display: flex; flex-direction: row; justify-content: center; margin-top: 10px">
 
                                         <input id="addEvent" class="btn btn-default btn-login" type="button" value="Add" style=" padding: 6px; text-transform: uppercase; width: 27%;">
+                                        <input id="changeEvent" class="btn btn-default btn-login" type="button" value="Change" style="display: none; padding: 6px; text-transform: uppercase; width: 27%;"/>
                                         <input id="deleteEvent" class="btn btn-default btn-danger" type="button" value="Delete" style=" padding: 6px; text-transform: uppercase; width: 27%;">
                                         <input id="closeModalWindow" data-dismiss="modal" aria-hidden="true" class="btn btn-default btn-login" type="button" value="Cancel" style=" padding: 6px; text-transform: uppercase; width: 27%;">
 

@@ -18,11 +18,9 @@ namespace MVC5FullCalandarPlugin.Controllers
 
         private IUserDbSet storageUsers;
 
-        public HomeController()
+        public HomeController(IUserDbSet storage)
         {
-            IKernel ninjectKernel = new StandardKernel();
-            ninjectKernel.Bind<IUserDbSet>().To<Storage>();
-            storageUsers = ninjectKernel.Get<IUserDbSet>();
+            storageUsers = storage;
         }
 
         /// <summary>

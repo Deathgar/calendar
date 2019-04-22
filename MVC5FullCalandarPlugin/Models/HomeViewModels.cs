@@ -11,6 +11,6 @@ namespace MVC5FullCalandarPlugin.Models
         public string Description { get; set; }
         public string Start_Date { get; set; }
         public string End_Date { get; set; }
-        public string urlImage { get; set; }
+        public ImageHTML Image { get; set; }
     }
 }
