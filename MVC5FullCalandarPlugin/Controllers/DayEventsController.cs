@@ -4,22 +4,30 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.SessionState;
-using MVC5FullCalandarPlugin.FireBase;
-using MVC5FullCalandarPlugin.FireBase.Users;
 using MVC5FullCalandarPlugin.Models;
+using MVC5FullCalandarPlugin.Services;
+using MVC5FullCalandarPlugin.Services.Interfaces;
+using MVC5FullCalandarPlugin.Services.Users;
+using Ninject;
 
 namespace MVC5FullCalandarPlugin.Controllers
 {
     public class DayEventsController : Controller
     {
+        private IUserDbSet storageUsers;
+
+        public DayEventsController()
+        {
+            IKernel ninjectKernel = new StandardKernel();
+            ninjectKernel.Bind<IUserDbSet>().To<Storage>();
+            storageUsers = ninjectKernel.Get<IUserDbSet>();
+        }
+
         [HttpPost]
         public string AddTimeAndEvent(string title, string description, string time, string date, string token)
         {
-            var userService = new UserService();
-
             var email = TokenService.getEmailWithToken(token);
-            var user = Storage.getInstance().GetUser(email);
+            var user = storageUsers.Get(email);
 
             var startDate = date + " " + "00:00";
             var id = DateTime.Now.GetHashCode().ToString();
@@ -55,7 +63,7 @@ namespace MVC5FullCalandarPlugin.Controllers
                 });
             }
 
-            userService.UpdateUser(user);
+            storageUsers.Update(user);
       
             return id;
         }
@@ -63,10 +71,8 @@ namespace MVC5FullCalandarPlugin.Controllers
         [HttpPost]
         public string ChangeTimeAndEvent(string title, string description, string time, string date, string token, string id)
         {
-            var userService = new UserService();
-
             var email = TokenService.getEmailWithToken(token);
-            var user = Storage.getInstance().GetUser(email);
+            var user = storageUsers.Get(email);
             var dat = user.Days.First(x => x.Date == date);
             var holy = dat.PublicHolidays.First(x => x.Id == id);
 
@@ -74,7 +80,7 @@ namespace MVC5FullCalandarPlugin.Controllers
             holy.Description = description;
             holy.Title = title;
 
-            userService.UpdateUser(user);
+            storageUsers.Update(user);
 
             return id;
         }
@@ -82,8 +88,7 @@ namespace MVC5FullCalandarPlugin.Controllers
         [HttpGet]
         public string GetAllTimeInDay(string date, string token)
         {
-            var service = new UserService();
-            var user = service.GetUser(TokenService.getEmailWithToken(token));
+            var user = storageUsers.Get(TokenService.getEmailWithToken(token));
             string str = user.Days.FirstOrDefault(x => x.Date == date).AllTime;
             return str;
         }
@@ -101,7 +106,7 @@ namespace MVC5FullCalandarPlugin.Controllers
                 {
                     //dynamic jsonData = JsonConvert.DeserializeObject<dynamic>(rawJsonStr);
                     // Loading.
-                    List<DayModel> data = Storage.getInstance().GetUser(email).Days;
+                    List<DayModel> data = storageUsers.Get(email).Days;
                     var day = data.First(x => x.Date == date);
                     var holy = day.PublicHolidays.First(x => x.Id == id);
 
@@ -121,21 +126,15 @@ namespace MVC5FullCalandarPlugin.Controllers
             return null;
         }
 
-        private int i = 0;
-
         [HttpPost]
         public string Delete(string id, string date ,string token)
         {
-            
-            var us = new UserService();
-            i++;
-
             var email = TokenService.getEmailWithToken(token);
-            var user = Storage.getInstance().GetUser(email);
+            var user = storageUsers.Get(email);
             var day = user.Days.First(x => x.Date == date);
             day.PublicHolidays.Remove(day.PublicHolidays.First(x => x.Id == id));
 
-            us.UpdateUser(user);
+            storageUsers.Update(user);
 
             return id;
         }

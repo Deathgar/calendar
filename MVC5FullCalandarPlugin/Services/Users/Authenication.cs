@@ -1,19 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using Firebase.Auth;
+using Firebase.Storage;
 using MVC5FullCalandarPlugin.Models;
+using MVC5FullCalandarPlugin.Services.Interfaces;
+using Ninject;
 using User = MVC5FullCalandarPlugin.Models.User;
 
-namespace MVC5FullCalandarPlugin.FireBase.Users
+namespace MVC5FullCalandarPlugin.Services.Users
 {
-    public class Authenication
+    public class Authenication : IAuthenication
     {
         private const string firebaseString = "AIzaSyD88164AWPWtE69-U8PQ7LW6USh-fNClv8";
+        private IUserDbSet storageUsers;
+        private IUserDbSet userDbSet;
 
-        public static string Registration(string email, string password, string firstName)
+        public Authenication()
+        {
+            storageUsers = new Storage();
+            userDbSet = new UserDbSet();
+        }
+
+        public string Registration(string email, string password, string firstName)
         {
             var auth = new FirebaseAuthProvider(new Firebase.Auth.FirebaseConfig(firebaseString));
             var regist = auth.CreateUserWithEmailAndPasswordAsync(email, password);
@@ -25,21 +36,13 @@ namespace MVC5FullCalandarPlugin.FireBase.Users
                 Days = new List<DayModel>()
             };
 
-            var crud = new UserService();
-            crud.AddUser(user);
+            userDbSet.Add(user);
+            storageUsers.Add(user);
 
             return Login(email, password);
         }
 
-        private static string GetHash(string input)
-        {
-            var md5 = MD5.Create();
-            var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(input));
-
-            return Convert.ToBase64String(hash);
-        }
-
-        public static string Login(string email, string password)
+        public string Login(string email, string password)
         {
             var auth = new FirebaseAuthProvider(new Firebase.Auth.FirebaseConfig(firebaseString));
             try
@@ -47,11 +50,10 @@ namespace MVC5FullCalandarPlugin.FireBase.Users
                 var resultAuthorithation = auth.SignInWithEmailAndPasswordAsync(email, password).Result;
                 
                 var token = resultAuthorithation.FirebaseToken;
-                var userCrud = new UserService();
 
-                var user = userCrud.GetUser(resultAuthorithation.User.Email);
+                var user = userDbSet.Get(resultAuthorithation.User.Email);
                 //user.Token = token;
-                Storage.getInstance().AddUser(user);
+                storageUsers.Add(user);
 
                 return token;
             }
@@ -63,9 +65,19 @@ namespace MVC5FullCalandarPlugin.FireBase.Users
         }
 
         //mb not need
-        public static void LogOut(string token)
+        public async void LogOut(string token)
         {
-            Storage.getInstance().RemoveUser(TokenService.getEmailWithToken(token));
+            var stream = File.Open(@"C:\Users\user\Desktop\knowledge_graph_logo.png", FileMode.Open);
+
+            var task = new FirebaseStorage("testcalendar-27287.appspot.com")
+                .Child("img")
+                .PutAsync(stream);
+
+           
+            task.Progress.ProgressChanged += (s, e) => Console.WriteLine($"Progress: {e.Percentage} %");
+            var downloadUrl = await task;
+
+            storageUsers.Delete(TokenService.getEmailWithToken(token));
             //mb redirect
         }
 

@@ -4,7 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Web;
 
-namespace MVC5FullCalandarPlugin.FireBase
+namespace MVC5FullCalandarPlugin.Services
 {
     public class TokenService
     {
