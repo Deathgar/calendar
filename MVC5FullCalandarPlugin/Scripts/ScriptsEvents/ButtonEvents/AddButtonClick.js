@@ -1,10 +1,7 @@
 ﻿
 
 $('#addEvent').click(function () {
-
-	var urlAddTimeEvent = '/DayEvents/AddTimeAndEvent';
-	var urlGetAllTimeInDay = '/DayEvents/GetAllTimeInDay';
-
+    
     var title = $('#title').val();
     var time = $('#time').val();
     var description = $('#description').val();

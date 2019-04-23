@@ -106,10 +106,18 @@ namespace MVC5FullCalandarPlugin.Controllers
             holy.Description = description;
             holy.Title = title;
 
-            if (image != null)
+            if (image != null )
             {
-                var task = Task.Run(async () => { await FireBaseStorage.UploadImage(holy, image, holy.Image.Id); });
-                task.Wait();
+                if (holy.Image != null)
+                {
+                    var task = Task.Run(async () => { await FireBaseStorage.UploadImage(holy, image, holy.Image.Id); });
+                    task.Wait();
+                }
+                else
+                {
+                    var task = Task.Run(async () => { await FireBaseStorage.UploadImage(holy, image); });
+                    task.Wait();
+                }
             }
 
             storageUsers.Update(user);

@@ -1,7 +1,6 @@
 ﻿
 
 $('#deleteEvent').click(function () {
-	var url = "/DayEvents/Delete";
 
 	var date = $('#hiddenDate').val();
 	var id = $('#hiddenInfo').val();
@@ -11,7 +10,7 @@ $('#deleteEvent').click(function () {
 
 
 	$.ajax({
-		url: url,
+		url: urlDelete,
 		type: "POST",
 		data: {
 			'id': id,

@@ -39,14 +39,16 @@ namespace MVC5FullCalandarPlugin
                 "~/Scripts/ScriptsEvents", "*.js", true);
             scriptsEventBundle.IncludeDirectory("~/Scripts/ScriptsEvents/ButtonEvents", "*.js", true);
             bundles.Add(scriptsEventBundle);
-  
 
+            bundles.Add(new ScriptBundle("~/Content/Global").Include(
+                "~/Content/Global.js"));
 
-
-           bundles.Add(new StyleBundle("~/Content/css").Include(
+            bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
                       "~/Content/AuthenticationStyle.css"));
+
+
 
         }
     }

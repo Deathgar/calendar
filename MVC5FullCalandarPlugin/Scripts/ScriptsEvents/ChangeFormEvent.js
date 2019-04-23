@@ -2,7 +2,6 @@
 
 function ChangeEventInfo(info) {
 
-    var url = '/DayEvents/GetEvent';
 
 	$('#addEvent').css("display", "none");
 	$('#changeEvent').css("display", "inline-block");
@@ -17,7 +16,7 @@ function ChangeEventInfo(info) {
 	var date = info.start._i;
 
 	$.ajax({
-		url: url,
+        url: urlGetEvent,
 		type: "GET",
 		data:
 		{
@@ -31,7 +30,7 @@ function ChangeEventInfo(info) {
 
 			$('#title').val(request.Title);
 			$('#time').val(request.Time);
-            $('#description').text(request.Description);
+            $('#description').val(request.Description);
             if (request.Image != null) {
 	            $('#imageDay').attr("src", request.Image.Url);
             }

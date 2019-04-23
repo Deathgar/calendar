@@ -1,6 +1,4 @@
 ﻿$("#registerButton").click(function () {
-    var url = '/Authentication/Registration';
-    var homeUrl = '/Home/Index';
 
 	var vEmail = $('#email').val();
 	var vFirstName = $('#firstName').val();
@@ -12,7 +10,7 @@
 	}
 
 	$.ajax({
-		url: url,
+        url: urlRegistration,
 		type: "POST",
 		data:
 		{

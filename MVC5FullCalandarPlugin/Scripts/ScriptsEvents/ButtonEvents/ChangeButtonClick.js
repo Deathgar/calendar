@@ -1,9 +1,7 @@
 ﻿
 
 $('#changeEvent').click(function () {
-
-	var url = "/DayEvents/ChangeTimeAndEvent";
-
+    
 	var date = $('#hiddenDate').val();
 	var token = localStorage.getItem("token");
 	var title = $('#title').val();
@@ -25,15 +23,20 @@ $('#changeEvent').click(function () {
 
 
 	$.ajax({
-		url: url,
+        url: urlChangeTimeAndEvent,
 		dataType: 'json',
 		contentType: false,
 		processData: false,
 		type: "POST",
-		data: formData,
-		success: function () {
-		}
-	});
-	RenderingDay(date, token);
+        data: formData,
+        success: function () {
+	        var z = 0;
+	        RenderingDay(date, token);
+        }
+       
+    });
+
+
+	
 	$('#myLoginModal').modal('hide');
 });

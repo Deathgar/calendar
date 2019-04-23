@@ -1,9 +1,6 @@
-﻿var url = '/DayEvents/GetAllTimeInDay';
-
-function RenderingDay(date, token) {
-
+﻿function RenderingDay(date, token) {
 	$.ajax({
-		url: url,
+        url: urlGetAllTimeInDay,
 		type: "GET",
 		data:
 		{

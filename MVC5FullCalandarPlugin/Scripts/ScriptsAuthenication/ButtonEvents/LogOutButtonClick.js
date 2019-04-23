@@ -1,10 +1,10 @@
 ﻿
 $("#logOut").click(function () {
-	var url = '/Authentication/LogOut';
-	var homeUrl = '/Home/Index';
+
+	var l = 0;
 
 	$.ajax({
-		url: url,
+        url: urlLogOut,
 		type: "POST",
 		data:
 		{
