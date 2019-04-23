@@ -279,8 +279,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\SweetController.cs" />
-    <Compile Include="FireBase\Security.cs" />
     <Compile Include="Models\ImageHTML.cs" />
+    <Compile Include="Services\FireBaseStorage.cs" />
     <Compile Include="Services\Injection\NinjectStorageReg.cs" />
     <Compile Include="Services\Interfaces\IAuthenication.cs" />
     <Compile Include="Services\Interfaces\IUserDbSet.cs" />
@@ -334,7 +334,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\ChangeEvent.js" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
     <Content Include="Scripts\jquery-3.0.0.js" />
     <Content Include="Scripts\jquery-3.0.0.min.js" />
@@ -347,7 +346,6 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\Authentication.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\popper-utils.js" />
     <Content Include="Scripts\popper-utils.min.js" />
@@ -356,6 +354,17 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\script-custom-calendar.js" />
+    <Content Include="Scripts\ScriptsAuthenication\ButtonEvents\LoginButtonClick.js" />
+    <Content Include="Scripts\ScriptsAuthenication\ButtonEvents\LogOutButtonClick.js" />
+    <Content Include="Scripts\ScriptsAuthenication\ButtonEvents\RegisterButtonClick.js" />
+    <Content Include="Scripts\ScriptsAuthenication\ShowOrHideButtons.js" />
+    <Content Include="Scripts\ScriptsEvents\ActionOnHiddenEventForm.js" />
+    <Content Include="Scripts\ScriptsEvents\AddFormEvent.js" />
+    <Content Include="Scripts\ScriptsEvents\ButtonEvents\AddButtonClick.js" />
+    <Content Include="Scripts\ScriptsEvents\ButtonEvents\ChangeButtonClick.js" />
+    <Content Include="Scripts\ScriptsEvents\ButtonEvents\DeleteButtonClick.js" />
+    <Content Include="Scripts\ScriptsEvents\ChangeFormEvent.js" />
+    <Content Include="Scripts\ScriptsEvents\RenderEvents.js" />
     <Content Include="Scripts\sweetalert.css" />
     <Content Include="Scripts\sweetalert.js" />
     <Content Include="Scripts\sweetalert.min.js" />
@@ -391,7 +400,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="FireBase\Users\" />
     <Folder Include="Views\DayEvents\" />
     <Folder Include="Views\Login\" />
   </ItemGroup>

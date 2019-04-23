@@ -253,6 +253,11 @@
     }
 }
 
-.fc-event-container {
+.fc-content {
     cursor: pointer;
 }
+
+    .fc-content:hover {
+        background: #dcbfff;
+        color: #1b191c;
+    }

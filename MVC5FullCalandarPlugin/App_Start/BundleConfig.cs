@@ -28,11 +28,22 @@ namespace MVC5FullCalandarPlugin
             bundles.Add(new ScriptBundle("~/bundles/Script-calendar").Include(
                                  "~/Scripts/script-custom-calendar.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/ScriptAuthentication").Include(
-                "~/Scripts/Authentication.js",
-                "~/Scripts/ChangeEvent.js"));
+            var authenticationScriptBundle =
+                new ScriptBundle("~/bundles/ScriptAuthentication").IncludeDirectory("~/Scripts/ScriptsAuthenication/",
+                    "*.js", true);
+            authenticationScriptBundle.Include("~/Scripts/ScriptsAuthenication/ShowOrHideButtons.js");
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
+            bundles.Add(authenticationScriptBundle);
+
+            var scriptsEventBundle = new ScriptBundle("~/bundles/ScriptEvents").IncludeDirectory(
+                "~/Scripts/ScriptsEvents", "*.js", true);
+            scriptsEventBundle.IncludeDirectory("~/Scripts/ScriptsEvents/ButtonEvents", "*.js", true);
+            bundles.Add(scriptsEventBundle);
+  
+
+
+
+           bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
                       "~/Content/AuthenticationStyle.css"));
