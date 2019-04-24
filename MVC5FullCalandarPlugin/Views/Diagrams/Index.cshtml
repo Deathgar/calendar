@@ -1,0 +1,103 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "title";
+}
+
+    <body>
+        <div>
+
+            <div class="box" style="width: 200px; height: 400px; overflow: auto; float: left; margin-top: 100px; margin-right: 40px; border: 1px double black; box-shadow: inset 0px 0px 10px rgba(0,0,0,0.9); background-color: #eff1f4; padding-left: 12px;">
+                dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />
+                dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />
+                dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />
+            </div>
+
+
+            <div style="float: left">
+                <canvas id="speedChart" width="800" height="600"></canvas>
+            </div>
+
+
+        </div>
+    </body>
+
+
+<script src="~/Scripts/Chart.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $.ajax({
+            url: '/Diagrams/GetN',
+            data:
+            {
+                "token": localStorage.getItem("token")
+            }
+        });
+    });
+
+    $('#hz').click(function() {
+        var speedCanvas = $('#speedChart');
+
+        Chart.defaults.global.defaultFontFamily = 'Lato';
+        Chart.defaults.global.defaultFontSize = 18;
+
+        var speedData = {
+            labels: ["29-01-2019", "30-01-2019", "31-01-2019", "01-02-2019", "02-02-2019", "03-02-2019", "04-02-2019"],
+            datasets: [{
+                label: "Car Speed (mph)",
+                data: [1, 5, 0, 0, 10, 23, 2]
+            }]
+        };
+
+        var chartOptions = {
+            legend: {
+                display: true,
+                position: 'top',
+                labels: {
+                    boxWidth: 1,
+                    fontColor: 'black'
+                }
+            }
+        };
+
+        var lineChart = new Chart(speedCanvas, {
+            type: 'line',
+            data: speedData,
+            options: chartOptions
+        });
+    })
+</script>
+
+<script type="text/javascript">
+    var speedCanvas = $('#speedChart');
+
+    Chart.defaults.global.defaultFontFamily = 'Lato';
+    Chart.defaults.global.defaultFontSize = 18;
+
+    var speedData = {
+        labels: ["0s", "10s", "20s", "30s", "40s", "50s", "60s"],
+        datasets: [{
+            label: "Car Speed (mph)",
+            data: [0, 59, 75, 20, 20, 55, 40],
+        }]
+    };
+
+    var chartOptions = {
+        legend: {
+            display: true,
+            position: 'top',
+            labels: {
+                boxWidth: 80,
+                fontColor: 'black'
+            }
+        }
+    };
+
+    var lineChart = new Chart(speedCanvas, {
+        type: 'line',
+        data: speedData,
+        options: chartOptions
+    });
+</script>
