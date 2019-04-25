@@ -6,13 +6,14 @@
 
     <body>
         <div>
-
-            <div class="box" style="width: 200px; height: 400px; overflow: auto; float: left; margin-top: 100px; margin-right: 40px; border: 1px double black; box-shadow: inset 0px 0px 10px rgba(0,0,0,0.9); background-color: #eff1f4; padding-left: 12px;">
-                dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />
-                dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />
-                dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />dawd<br />
+            <div style="float: left;">
+                <div class="diagramButtons" style="width: 200px; height: 400px; overflow: auto;  margin-top: 100px; margin-right: 40px; border: 1px double black; box-shadow: inset 0px 0px 10px rgba(0,0,0,0.9); background-color: #eff1f4; padding-left: 12px;">
+                   
+                </div>
+                <div style="text-align: center; margin-right: 50px; margin-top: 30px;" >
+                    <input id="All" type="button" value="All" style="width: 100px"/>
+                </div>
             </div>
-
 
             <div style="float: left">
                 <canvas id="speedChart" width="800" height="600"></canvas>
@@ -26,29 +27,221 @@
 <script src="~/Scripts/Chart.min.js"></script>
 
 <script type="text/javascript">
+   
 
-    $(document).ready(function() {
+    $(document).ready(function () {
+
         $.ajax({
             url: '/Diagrams/GetN',
             data:
             {
                 "token": localStorage.getItem("token")
+            },
+            success: function (request) {
+
+                $.each(request.Events,
+                    function (i, item) {
+                        $(".diagramButtons").append('<input id="' + item.Id + '" class="btn btn-default btn-register diagButton" type="button" value="' + i + '" ></input><br>');
+                        $('#' + item.Id).data('info', item);
+                    });
+
+               
             }
         });
+
     });
 
-    $('#hz').click(function() {
+    $(document).on('click','.diagButton',
+        function() {
+            var title = $(this).val();
+            var arrays = $('#' + this.id).data('info');
+
+            var z = {
+                dates: arrays.Dates,
+                times: arrays.Times
+            }
+
+            renderCanvas(title, arrays.Dates, arrays.Times);
+        });
+
+    function renderCanvas(title, dates, times) {
+
+        var speedCanvas = $('#speedChart');
+        var newArr = [];
+
+        Chart.defaults.global.defaultFontFamily = 'Lato';
+        Chart.defaults.global.defaultFontSize = 18;
+
+        for (var i = 0; i < dates.length; i++) {
+            var p = {
+                date: dates[i],
+                time: times[i]
+            };
+            newArr.push(p);
+        }
+
+        newArr.sort((a, b) => moment(a.date, 'YYYY-MM-DD') - moment(b.date, 'YYYY-MM-DD'));
+
+        console.log(newArr);
+
+        var sortTimes = [];
+        var sortDates = [];
+
+        for (var i = 0; i < newArr.length; i++) {
+            sortTimes.push(newArr[i].time);
+            sortDates.push(newArr[i].date);
+        }
+
+        var speedData = {
+            labels: sortDates,
+            datasets: [{
+                label: title,
+                data: sortTimes
+            }]
+        };
+
+        var chartOptions = {
+            legend: {
+                display: true,
+                position: 'top',
+                labels: {
+                    boxWidth: 1,
+                    fontColor: 'black'
+                }
+            }
+        };
+
+        var lineChart = new Chart(speedCanvas, {
+            type: 'line',
+            data: speedData,
+            options: chartOptions
+        });
+    }
+   
+
+    $('#All').click(function () {
+
+        var dates = [];
+        var timesAndTitles = [];
+
+        var newArr = [];
+        var ggz = [];
+
+        $.each($(".diagButton"),
+            function (v, item)
+            {
+                //console.log($('#' + item.id).data('info'));
+                var k = {
+                    title: $('#' + item.id).val(),
+                    dates: $('#' + item.id).data('info').Dates,
+                    times: $('#' + item.id).data('info').Times
+                }
+                ggz.push(k);
+
+                for (var i = 0; i < $('#' + item.id).data('info').Dates.length; i++) {
+
+                    var l = {
+                        "title": $('#' + item.id).val(),
+                        "date": $('#' + item.id).data('info').Dates[i],
+                        "time": $('#' + item.id).data('info').Times[i]
+                    };
+
+                    newArr.push(l);
+                }
+
+
+                $.each($('#' + item.id).data('info').Dates,
+                    function(v, item) {
+                        dates.push(item);
+                    });
+               
+                var z = {
+                    "label": $('#' + item.id).val(),
+                    "data": ($('#' + item.id).data('info').Times)
+                }
+            
+                timesAndTitles.push(z);
+
+            });
+
+      //  console.log(ggz);
+        newArr.sort((a, b) => moment(a.date, 'YYYY-MM-DD') - moment(b.date, 'YYYY-MM-DD'));
+
+        var hzChe = [];
+
+        $.each(newArr,
+            function(i, item) {
+
+                if (typeof hzChe[item.date] !== 'undefined') {
+                    hzChe[item.date].push(item.time);
+                } else {
+                    hzChe[item.date] = [];
+                    hzChe[item.date].push(item.time);
+                }
+
+            });
+
+
+     
+
+        dates.sort((a, b) => moment(a, 'YYYY-MM-DD') - moment(b, 'YYYY-MM-DD'));
+        var newDates = [];
+        $.each(dates, function(i, el){
+            if($.inArray(el, newDates) === -1) newDates.push(el);
+        });
+       // console.log(newDates);
+
+        var all = [];
+
+        $.each(ggz,
+            function (v, item) {
+                var tempDates = [];
+
+                var isEquals = false;
+
+                for (var i = 0; i < newDates.length; i++)
+                {
+                    isEquals = false;
+                    for (var j = 0; j < item.dates.length; j++)
+                    {
+                        //console.log(i + ") " + newDates[i] + " : " + item.dates[j]);
+                        if (newDates[i] === item.dates[j]) {
+                            isEquals = true;
+                            tempDates.push(item.times[j]);
+                            break;
+                        }
+                    }
+                    if (!isEquals) {
+                        tempDates.push(0);
+                    }
+                }
+
+                var r = Math.floor(Math.random() * 255);
+                var g = Math.floor(Math.random() * 255);
+                var b = Math.floor(Math.random() * 255);
+                var color = "rgb(" + r + "," + g + "," + b + ")";
+
+                all.push({
+                    "label": item.title,
+                    "data": tempDates,
+                    borderColor: color,
+                    backgroundColor: 'transparent',
+                    pointBorderColor: color,
+                    pointBackgroundColor: 'transparent'
+                });
+
+            });
+
+        console.log(all);
+
         var speedCanvas = $('#speedChart');
 
         Chart.defaults.global.defaultFontFamily = 'Lato';
         Chart.defaults.global.defaultFontSize = 18;
 
         var speedData = {
-            labels: ["29-01-2019", "30-01-2019", "31-01-2019", "01-02-2019", "02-02-2019", "03-02-2019", "04-02-2019"],
-            datasets: [{
-                label: "Car Speed (mph)",
-                data: [1, 5, 0, 0, 10, 23, 2]
-            }]
+            labels: newDates,
+            datasets: all
         };
 
         var chartOptions = {

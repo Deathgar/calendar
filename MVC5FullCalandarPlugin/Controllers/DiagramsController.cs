@@ -20,7 +20,7 @@ namespace MVC5FullCalandarPlugin.Controllers
         }
 
         [HttpGet]
-        public void GetN(string token)
+        public ActionResult GetN(string token)
         {
             var model = new SpecialEventModel();
 
@@ -38,9 +38,9 @@ namespace MVC5FullCalandarPlugin.Controllers
 
             List<DayModel> days;
 
-            var w = new List<EventsWithEqualsName>();
+            var w = new Dictionary<string, EventsWithEqualsName>();
 
-
+            int i = 0;
             foreach (var title in arr)
             {
                 days = user.Days.FindAll(x => x.PublicHolidays.Any(e => e.Title == title)).ToList();
@@ -51,18 +51,34 @@ namespace MVC5FullCalandarPlugin.Controllers
                 days.ForEach(x => daysN.Add(x.PublicHolidays.Find(e => e.Title == title).End_Date));
                 days.ForEach(x => times.Add(x.PublicHolidays.Find(e => e.Title == title).Time));
 
-                w.Add(new EventsWithEqualsName
+                w.Add(title,new EventsWithEqualsName
                 {
-                    Title = title,
+                    Id = i++ + "",
                     Times = times,
                     Dates = daysN
 
                 });
             }
-
             model.Events = w;
 
-            return;
+            JsonResult result = new JsonResult();
+
+            try
+            {
+                //dynamic jsonData = JsonConvert.DeserializeObject<dynamic>(rawJsonStr);
+                // Loading.
+                // Processing.
+                result = this.Json(model, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                // Info
+                Console.Write(ex);
+            }
+
+            // Return info.
+            return result;
+
         }
     }
 }

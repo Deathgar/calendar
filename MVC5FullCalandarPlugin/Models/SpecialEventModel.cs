@@ -4,6 +4,6 @@ namespace MVC5FullCalandarPlugin.Models
 {
     public class SpecialEventModel
     {
-        public List<EventsWithEqualsName> Events { get; set; }
+        public Dictionary<string ,EventsWithEqualsName> Events { get; set; }
     }
 }
