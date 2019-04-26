@@ -362,6 +362,9 @@
     <Content Include="Scripts\script-custom-calendar.js" />
     <Content Include="Scripts\ScriptsAuthenication\ButtonClicks.js" />
     <Content Include="Scripts\ScriptsAuthenication\ShowOrHideButtons.js" />
+    <Content Include="Scripts\ScriptsDiagram\ButtonsClicks.js" />
+    <Content Include="Scripts\ScriptsDiagram\DocumentScripts.js" />
+    <Content Include="Scripts\ScriptsDiagram\SupportFunctions.js" />
     <Content Include="Scripts\ScriptsEvents\ActionOnHiddenEventForm.js" />
     <Content Include="Scripts\ScriptsEvents\ButtonEvents\ButtonClicks.js" />
     <Content Include="Scripts\ScriptsEvents\EventsForm.js" />

@@ -48,6 +48,10 @@ namespace MVC5FullCalandarPlugin
                       "~/Content/site.css",
                       "~/Content/AuthenticationStyle.css"));
 
+            bundles.Add(new ScriptBundle("~/bundles/Diagrams").Include(
+                "~/Scripts/ScriptsDiagram/SupportFunctions.js",
+                "~/Scripts/ScriptsDiagram/DocumentScripts.js",
+                "~/Scripts/ScriptsDiagram/ButtonsClicks.js"));
 
 
         }
