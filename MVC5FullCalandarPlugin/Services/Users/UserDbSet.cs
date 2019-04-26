@@ -10,6 +10,8 @@ namespace MVC5FullCalandarPlugin.Services.Users
 {
     public class UserDbSet : IUserDbSet
     {
+        private const string userPathPart = "Users/";
+
         private IFirebaseConfig config = new FirebaseConfig
         {
 
@@ -34,22 +36,22 @@ namespace MVC5FullCalandarPlugin.Services.Users
 
         public void Add(User user)
         {
-            SetResponse response = Client.Set("Users/" + UpdateInGoodString(user.Email), user);
+            SetResponse response = Client.Set(userPathPart + UpdateInGoodString(user.Email), user);
         }
 
         public void Update(User user)
         {
-            SetResponse response = Client.Set("Users/" + UpdateInGoodString(user.Email), user);
+            SetResponse response = Client.Set(userPathPart + UpdateInGoodString(user.Email), user);
         }
 
         public void Delete(string email)
         {
-            Client.Delete("Users/" + UpdateInGoodString(email));
+            Client.Delete(userPathPart + UpdateInGoodString(email));
         }
 
         public User Get(string email)
         {
-            FirebaseResponse response = Client.Get("Users/" + UpdateInGoodString(email));
+            FirebaseResponse response = Client.Get(userPathPart + UpdateInGoodString(email));
 
             return response.ResultAs<User>();
         }

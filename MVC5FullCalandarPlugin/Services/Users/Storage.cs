@@ -45,12 +45,5 @@ namespace MVC5FullCalandarPlugin.Services.Users
         {
             users.Remove(Get(email));
         }
-
-        public PublicHoliday GetEventWithName(string eventName, string token)
-        {
-            var email = TokenService.getEmailWithToken(token);
-            var user = users.First(x => x.Email == email);
-            return null;
-        }
     }
 }

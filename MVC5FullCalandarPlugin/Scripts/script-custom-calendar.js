@@ -48,7 +48,8 @@ $(document).ready(function () {
 
         },
 
-        eventClick: function(info) {
+        eventClick: function (info) {
+            console.log($(this));
 	        ChangeEventInfo(info);
         },
        
@@ -102,26 +103,33 @@ $(document).ready(function () {
 									            allDay: true,
 									            backgroundColor: "#9501fc",
 									            borderColor: "#494949",
-									            id: newData.Id
-								            });
+                                                id: newData.Id
+                                            });
+							            
 
 						            });
 
 
 				            });
 			            // console.log(events);
-			            callback(events);
+                        callback(events);
 		            }
 	            });
             
         },
 
         eventRender: function (event, element) {
-            
+	        element[0].id = event.id;
             element.qtip(
                 {
                     content: event.description
                 });
+     
+        },
+
+        eventAfterRender: function (event, elemet) {
+	        $("#" + event.id).data("jopa", event);
+            console.log($("#" + event.id).data("jopa"));
         },
 
         editable: false

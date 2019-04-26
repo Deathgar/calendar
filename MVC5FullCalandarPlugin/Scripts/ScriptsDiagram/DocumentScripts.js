@@ -1,7 +1,7 @@
 ﻿function StartPage (url) {
 
 	$.ajax({
-		url: '/Diagrams/GetN',
+        url: url,
 		data:
 		{
 			"token": localStorage.getItem("token")

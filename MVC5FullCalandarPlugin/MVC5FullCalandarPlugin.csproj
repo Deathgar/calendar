@@ -275,14 +275,13 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Controllers\DayEventsController.cs" />
     <Compile Include="Controllers\DiagramsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
-    <Compile Include="Controllers\SweetController.cs" />
     <Compile Include="Models\EventsWithEqualsName.cs" />
     <Compile Include="Models\ImageHTML.cs" />
     <Compile Include="Models\SpecialEventModel.cs" />
+    <Compile Include="Services\DayEvents.cs" />
     <Compile Include="Services\FireBaseStorage.cs" />
     <Compile Include="Services\Injection\NinjectStorageReg.cs" />
     <Compile Include="Services\Interfaces\IAuthenication.cs" />
@@ -294,7 +293,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AutentifUser.cs" />
     <Compile Include="Models\DayModel.cs" />
     <Compile Include="Models\HomeViewModels.cs" />
     <Compile Include="Models\User.cs" />

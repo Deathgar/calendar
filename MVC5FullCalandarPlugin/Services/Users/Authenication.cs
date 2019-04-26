@@ -68,15 +68,6 @@ namespace MVC5FullCalandarPlugin.Services.Users
         //mb not need
         public void LogOut(string token)
         {
-            var stream = File.Open(@"C:\Users\user\Desktop\knowledge_graph_logo.png", FileMode.Open);
-
-            var task = new FirebaseStorage("testcalendar-27287.appspot.com")
-                .Child("img")
-                .PutAsync(stream);
-
-           
-            task.Progress.ProgressChanged += (s, e) => Console.WriteLine($"Progress: {e.Percentage} %");
-
             storageUsers.Delete(TokenService.getEmailWithToken(token));
         }
 

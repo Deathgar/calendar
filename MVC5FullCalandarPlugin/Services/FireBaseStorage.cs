@@ -11,9 +11,12 @@ namespace MVC5FullCalandarPlugin.Services
 {
     public class FireBaseStorage
     {
+        private const string storageName = "testcalendar-27287.appspot.com";
+        private const string partPathSaveFiles = @"D:/Files/";
+
         public static async Task<string> UploadImage(PublicHoliday holy, HttpPostedFileBase imagePath, string id = null)
         {
-
+            
             if (id != null)
             {
                DeleteImage(id);
@@ -21,13 +24,13 @@ namespace MVC5FullCalandarPlugin.Services
 
             id = DateTime.Now.GetHashCode() + "";
 
-            var path = @"D:/Files/" + imagePath.FileName;
+            var path = partPathSaveFiles + imagePath.FileName;
 
             imagePath.SaveAs(path);
 
             var stream = System.IO.File.Open(path, FileMode.Open);
 
-            var task = new FirebaseStorage("testcalendar-27287.appspot.com")
+            var task = new FirebaseStorage(storageName)
                 .Child(id)
                 .PutAsync(stream);
 
@@ -48,7 +51,7 @@ namespace MVC5FullCalandarPlugin.Services
 
         public static async void DeleteImage(string id)
         {
-            var taskDel = new FirebaseStorage("testcalendar-27287.appspot.com")
+            var taskDel = new FirebaseStorage(storageName)
                 .Child(id)
                 .DeleteAsync();
 
