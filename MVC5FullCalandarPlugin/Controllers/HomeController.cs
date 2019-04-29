@@ -18,7 +18,7 @@ namespace MVC5FullCalandarPlugin.Controllers
         #region Index method
 
         private IUserDbSet storageUsers;
-        private DayEvents dayEvents = new DayEvents();
+        public DayEvents dayEvents = new DayEvents();
 
         public HomeController(IUserDbSet storage)
         {
@@ -93,6 +93,12 @@ namespace MVC5FullCalandarPlugin.Controllers
             return dayEvents.ChangeTimeAndEvent(title, description, time, date, token, id, image);
         }
 
+        public string TestChangeTimeAndEvent(string title, string description, string time, string date, string token, string id)
+        {
+
+            return dayEvents.ChangeTimeAndEvent(title, description, time, date, token, id, null);
+        }
+
 
         [HttpPost]
         public string AddTimeAndEvent()
@@ -105,6 +111,11 @@ namespace MVC5FullCalandarPlugin.Controllers
             var token = Request.Form["token"];
 
             return dayEvents.AddTimeAndEvent(title, description, time, date, token, image);
+        }
+
+        public string TestAddTimeAndEvent(string title, string description, string time, string date, string token)
+        {
+            return dayEvents.AddTimeAndEvent(title, description, time, date, token, null);
         }
 
         [HttpGet]

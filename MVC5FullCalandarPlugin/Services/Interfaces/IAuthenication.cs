@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MVC5FullCalandarPlugin.Services.Interfaces
 {
-    interface IAuthenication
+    public interface IAuthenication
     {
         string Login(string email, string password);
         string Registration(string email, string password, string firstName);

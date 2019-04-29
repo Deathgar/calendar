@@ -17,7 +17,7 @@ namespace MVC5FullCalandarPlugin.Controllers
 
         private IAuthenication authenicationService;
 
-        public AuthenticationController(Authenication auth)
+        public AuthenticationController(IAuthenication auth)
         {
             authenicationService = auth;
         }
@@ -30,9 +30,7 @@ namespace MVC5FullCalandarPlugin.Controllers
         [HttpPost]
         public string Registration(string email, string password, string firstName)
         {
-            
             return authenicationService.Registration(email, password, firstName);
-
         }
 
         [HttpPost]

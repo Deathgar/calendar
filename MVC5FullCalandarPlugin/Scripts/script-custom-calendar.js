@@ -56,7 +56,9 @@ $(document).ready(function () {
 
 
         events: function (start, end, timezone, callback) {
+	        console.log(localStorage.getItem("token"));
             var token = localStorage.getItem("token");
+            
 	            $.ajax({
 		            url: '/Home/GetCalendarData',
 		            type: "GET",

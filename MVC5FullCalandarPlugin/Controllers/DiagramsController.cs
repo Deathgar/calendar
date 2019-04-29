@@ -5,12 +5,19 @@ using System.Web;
 using System.Web.Mvc;
 using MVC5FullCalandarPlugin.Models;
 using MVC5FullCalandarPlugin.Services;
+using MVC5FullCalandarPlugin.Services.Interfaces;
 using MVC5FullCalandarPlugin.Services.Users;
 
 namespace MVC5FullCalandarPlugin.Controllers
 {
     public class DiagramsController : Controller
     {
+        private IUserDbSet storage;
+
+        public DiagramsController(IUserDbSet s)
+        {
+            storage = s;
+        }
         // GET: Diagrams
         public ActionResult Index()
         {
@@ -24,7 +31,6 @@ namespace MVC5FullCalandarPlugin.Controllers
         {
             var model = new SpecialEventModel();
 
-            var storage = new Storage();
             var email = TokenService.getEmailWithToken(token);
             var user = storage.Get(email);
             

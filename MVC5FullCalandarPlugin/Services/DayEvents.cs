@@ -10,9 +10,19 @@ using MVC5FullCalandarPlugin.Services.Users;
 
 namespace MVC5FullCalandarPlugin.Services
 {
-    public class DayEvents
+    public class DayEvents : IDayEvent
     {
         IUserDbSet storageUsers = new Storage();
+
+        public DayEvents(IUserDbSet s)
+        {
+            storageUsers = s;
+        }
+
+        public DayEvents()
+        {
+
+        }
 
         public string ChangeTimeAndEvent(string title, string description, string time, string date, string token, string id, HttpPostedFileBase image)
         {
@@ -94,7 +104,7 @@ namespace MVC5FullCalandarPlugin.Services
             storageUsers.Update(user);
 
             return id;
-        }
+        } 
 
         public string GetAllTimeInDay(string date, string token)
         {
@@ -120,7 +130,11 @@ namespace MVC5FullCalandarPlugin.Services
             var user = storageUsers.Get(email);
             var day = user.Days.First(x => x.Date == date);
             var holy = day.PublicHolidays.First(x => x.Id == id);
-            FireBaseStorage.DeleteImage(holy.Image.Id);
+            if (holy.Image != null)
+            {
+                FireBaseStorage.DeleteImage(holy.Image.Id);
+            }
+
             day.PublicHolidays.Remove(holy);
 
             storageUsers.Update(user);
