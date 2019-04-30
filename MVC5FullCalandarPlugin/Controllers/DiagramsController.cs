@@ -21,8 +21,6 @@ namespace MVC5FullCalandarPlugin.Controllers
         // GET: Diagrams
         public ActionResult Index()
         {
-           
-
             return View();
         }
 

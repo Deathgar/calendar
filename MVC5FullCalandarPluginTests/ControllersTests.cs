@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Microsoft.VisualBasic.Devices;
 using Moq;
 using MVC5FullCalandarPlugin.Controllers;
 using MVC5FullCalandarPlugin.Models;
 using MVC5FullCalandarPlugin.Services;
 using MVC5FullCalandarPlugin.Services.Interfaces;
-using Ninject.Activation;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
-namespace MVC5FullCalandarPlugin.Tests
+namespace MVC5FullCalandarPluginTests
 {
     [TestFixture]
     public class Test
@@ -68,8 +63,7 @@ namespace MVC5FullCalandarPlugin.Tests
             {
                 Days = days,
                 Email = email,
-                FirstName = "Luntik",
-                Token = null
+                FirstName = "Luntik"
             };
         }
 
@@ -83,9 +77,9 @@ namespace MVC5FullCalandarPlugin.Tests
             var d = new DayEvents(mock1.Object);
 
             var mock = new Mock<IDayEvent>();
-           
+
             mock.Setup(x => x.GetEvent(token, date, id)).Returns(pH);
-            HomeController controller = new HomeController(null) {dayEvents = d};
+            HomeController controller = new HomeController(null) { dayEvents = d };
             // Act
             var result = controller.GetEvent(token, date, id);
 
@@ -107,7 +101,7 @@ namespace MVC5FullCalandarPlugin.Tests
             mock.Setup(x => x.GetEvent(token, date, id)).Returns(pH);
             HomeController controller = new HomeController(null) { dayEvents = d };
 
-           
+
             // Act
             var result = controller.TestChangeTimeAndEvent(title, description, time, date, token, id);
 
@@ -151,7 +145,7 @@ namespace MVC5FullCalandarPlugin.Tests
             mock.Setup(x => x.GetEvent(token, date, id)).Returns(pH);
             HomeController controller = new HomeController(null) { dayEvents = d };
             // Act
-            
+
             var result = controller.GetCalendarData(token);
 
             // Assert
@@ -194,7 +188,7 @@ namespace MVC5FullCalandarPlugin.Tests
             HomeController controller = new HomeController(null) { dayEvents = d };
             // Act
 
-            var result = controller.Delete(id,date, token);
+            var result = controller.Delete(id, date, token);
 
             // Assert
             Assert.AreEqual(result, "42");

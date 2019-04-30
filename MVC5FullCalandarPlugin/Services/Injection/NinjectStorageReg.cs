@@ -13,6 +13,7 @@ namespace MVC5FullCalandarPlugin.Services.Injection
         public override void Load()
         {
             Bind<IUserDbSet>().To<Storage>();
+            Bind<IAuthenication>().To<Authenication>();
         }
     }
 }
