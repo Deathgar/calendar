@@ -15,8 +15,6 @@ namespace MVC5FullCalandarPlugin.Controllers
 {
     public class HomeController : Controller
     {
-        #region Index method
-
         private IUserDbSet storageUsers;
         public DayEvents dayEvents = new DayEvents();
 
@@ -34,11 +32,6 @@ namespace MVC5FullCalandarPlugin.Controllers
             // Info.
             return View();
         }
-
-        #endregion
-
-        #region Get Calendar data method.
-
 
         /// <summary>
         /// GET: /Home/GetCalendarData
@@ -154,7 +147,6 @@ namespace MVC5FullCalandarPlugin.Controllers
             return dayEvents.Delete(id, date, token);
         }
 
-        #endregion
 
     }
 }
