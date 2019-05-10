@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Web.Helpers;
 using FireSharp.Interfaces;
 using FireSharp.Response;
 using MVC5FullCalandarPlugin;
@@ -52,12 +53,62 @@ namespace MVC5FullCalandarPlugin.Services.Users
             var response = Client.Get(userPathPart);
             var j = System.Web.Helpers.Json.Decode(response.Body);
 
+            var users = new List<User>();
+
             foreach (var v in j)
             {
-                var l = v;
+                var tempUser = new User();
+                var daysList = new List<DayModel>();
+                
+                var userJson = v.Value;
+
+                var days = userJson.Days;
+
+        //public string Id { get; set; }
+        //public string Time { get; set; }
+        //public string Title { get; set; }
+        //public string Description { get; set; }
+        //public string Start_Date { get; set; }
+        //public string End_Date { get; set; }
+        //public ImageHTML Image { get; set; }
+
+                if (days != null)
+                {
+                    foreach (var day in days)
+                    {
+                        var tempNewDay = new DayModel() {PublicHolidays = new List<PublicHoliday>()};
+                        var tempDay = day.PublicHolidays;
+
+                        foreach (var holiday in tempDay)
+                        {
+                            ImageHTML tempImage;
+
+                            if (holiday.Image == null)
+                            {
+                                tempImage = null;
+                            }
+                            else
+                            {
+                                tempImage = new ImageHTML() { Id = holiday.Image.Id, Url = holiday.Image.Url };
+                            }
+
+                            var tempHoliday = new PublicHoliday() { Id = holiday.Id, Time = holiday.Time, Title = holiday.Title, Description = holiday.Description,
+                                                                    Start_Date = holiday.Start_Date, End_Date = holiday.End_Date, Image = tempImage};
+                            tempNewDay.PublicHolidays.Add(tempHoliday);
+                            tempNewDay.Date = holiday.End_Date;
+                        }
+
+                        daysList.Add(tempNewDay);
+                    }
+
+                    tempUser.Email = userJson.Email;
+                    tempUser.FirstName = userJson.FirstName;
+                    tempUser.Days = daysList;
+                    users.Add(tempUser);
+                }
             }
-            
-            return null;
+
+            return users;
         }
 
         public void Delete(string email)

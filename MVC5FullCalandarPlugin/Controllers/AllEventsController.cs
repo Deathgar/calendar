@@ -20,9 +20,9 @@ namespace MVC5FullCalandarPlugin.Controllers
         // GET: AllEvents
         public ActionResult Index()
         {
-            storage.GetAll();
+            var users = storage.GetAll();
 
-            return View();
+            return View(users);
         }
     }
 }

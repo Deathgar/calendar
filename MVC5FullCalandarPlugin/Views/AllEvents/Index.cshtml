@@ -1,4 +1,4 @@
-﻿@model MVC5FullCalandarPlugin.Models.User
+﻿@model List<MVC5FullCalandarPlugin.Models.User>
 
 <!DOCTYPE html>
 
@@ -7,15 +7,87 @@
     <title>title</title>
 </head>
 <body>
-    
-    <div>
-        <input id="ha" class="btn hovers" type="button" value="Hz" />
-        <div id="ha" class="containerWithPanelsEvent">
-                @Html.Partial("_AllEventsPartial");
 
+    @*<div class="modal fade login" data-backdrop="static" id="myLoginModal">
+        <div class="modal-dialog login animated">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" align="center">Event</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box">
+                        <div class="content">
+
+                            <div class="error"></div>
+                            <div class="form loginBox">
+                                <form method="" action="" accept-charset="UTF-8">
+                                    <input id="title" class="form-control center" type="text" placeholder="Title" name="title">
+                                    <input id="time" class="form-control center" type="text" placeholder="Time" name="time">
+                                    <textarea id="description" class="form-control center" rows="3" placeholder="Description" style="color: black"></textarea>
+
+                                    <div id="imageNone" style="display: flex; flex-direction: column; justify-content: center; margin-top: 10px;">
+                                        <a>
+                                            <img id="imageDay" src="https://webref.ru/assets/images/html5-css3/img-04.jpg" style="width: 100%;  height: 100%; object-fit: cover;" />
+                                        </a>
+
+
+                                        <div id="imageNone" style="display: flex; flex-direction: row; justify-content: center; margin-top: 10px;">
+                                            <label class="btn btn-default center">
+                                                Image <input id="imageButton" type="file" style="display: none">
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div style="display: flex; flex-direction: row; justify-content: center; margin-top: 10px">
+
+                                        <input id="addEvent" class="btn btn-default btn-login" type="button" value="Add" style=" padding: 6px; text-transform: uppercase; width: 27%;">
+                                        <input id="changeEvent" class="btn btn-default btn-login" type="button" value="Change" style="display: none; padding: 6px; text-transform: uppercase; width: 27%;" />
+                                        <input id="deleteEvent" class="btn btn-default btn-danger" type="button" value="Delete" style=" padding: 6px; text-transform: uppercase; width: 27%;">
+                                        <input id="closeModalWindow" data-dismiss="modal" aria-hidden="true" class="btn btn-default btn-login" type="button" value="Cancel" style=" padding: 6px; text-transform: uppercase; width: 27%;">
+
+                                    </div>
+                                    <input id="hiddenDate" style="display: none" />
+                                    <input id="hiddenInfo" style="display: none" />
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="content registerBox" style="display:none;">
+                            <div class="form">
+                                <form method="" action="" accept-charset="UTF-8">
+                                    <input id="firstName" class="form-control center" type="text" placeholder="Name" name="firstName" />
+                                    <input id="email" class="form-control center" type="text" placeholder="Email" name="email">
+                                    <input id="password" class="form-control center" type="password" placeholder="Password" name="password">
+                                    <input id="password_confirmation" class="form-control center" type="password" placeholder="Repeat Password" name="password_confirmation">
+                                    <input id="registerButton" class="btn btn-default btn-register" type="button" value="Create account">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="forgot login-footer">
+                        <span>
+                            Looking to
+                            <a href="javascript: showRegisterForm();">create an account</a>
+                            ?
+                        </span>
+                    </div>
+                    <div class="forgot register-footer" style="display:none">
+                        <span>Already have an account?</span>
+                        <a href="javascript: showLoginForm();">Login</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <input class="btn hovers" type="button" value="Hz" />
-    </div>
+    </div>*@
+
+<div>
+    @Html.Partial("_AllEventsPartial", Model)
+</div>
 </body>
 </html>
 
