@@ -33,7 +33,7 @@ namespace Tests.MVC5FullCalandarPlugin
         {
             date = "22-10-2016";
             id = "42";
-            email = "koko@ko.k";
+            email = "koko@ko.ko";
             time = "4";
             title = "Title";
             description = "Description";
@@ -76,7 +76,7 @@ namespace Tests.MVC5FullCalandarPlugin
         {
             IUserDbSet userDbSet = new TestDbSetUser();
     
-            var mock1 = new Mock<IUserDbSet>(MockBehavior.Loose);
+            var mock1 = new Mock<IUserDbSet>();
 
             mock1.Setup(x => x.Get(email)).Returns(user);
 

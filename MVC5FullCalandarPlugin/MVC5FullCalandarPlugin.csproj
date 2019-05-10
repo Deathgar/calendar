@@ -304,6 +304,7 @@
     <Compile Include="Services\Interfaces\IAuthenication.cs" />
     <Compile Include="Services\Interfaces\IDayEvent.cs" />
     <Compile Include="Services\Interfaces\IUserDbSet.cs" />
+    <Compile Include="Services\TestDbSetUser.cs" />
     <Compile Include="Services\Users\Storage.cs" />
     <Compile Include="Services\TokenService.cs" />
     <Compile Include="Services\Users\Authenication.cs" />
