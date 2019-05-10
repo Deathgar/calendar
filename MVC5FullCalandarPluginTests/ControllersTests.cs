@@ -5,10 +5,11 @@ using MVC5FullCalandarPlugin.Controllers;
 using MVC5FullCalandarPlugin.Models;
 using MVC5FullCalandarPlugin.Services;
 using MVC5FullCalandarPlugin.Services.Interfaces;
+using MVC5FullCalandarPlugin.Services.Users;
 using NUnit.Framework;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
-namespace MVC5FullCalandarPluginTests
+namespace Tests.MVC5FullCalandarPlugin
 {
     [TestFixture]
     public class Test
@@ -79,7 +80,7 @@ namespace MVC5FullCalandarPluginTests
             var mock = new Mock<IDayEvent>();
 
             mock.Setup(x => x.GetEvent(token, date, id)).Returns(pH);
-            HomeController controller = new HomeController(null) { dayEvents = d };
+            MVC5FullCalandarPlugin.Controllers.HomeController controller = new HomeController(null) { dayEvents = d };
             // Act
             var result = controller.GetEvent(token, date, id);
 
@@ -96,9 +97,6 @@ namespace MVC5FullCalandarPluginTests
 
             var d = new DayEvents(mock1.Object);
 
-            var mock = new Mock<IDayEvent>();
-
-            mock.Setup(x => x.GetEvent(token, date, id)).Returns(pH);
             HomeController controller = new HomeController(null) { dayEvents = d };
 
 
@@ -107,6 +105,14 @@ namespace MVC5FullCalandarPluginTests
 
             // Assert
             Assert.AreEqual(result, "42");
+        }
+
+        [Test]
+        public void Testzzz()
+        {
+            UserDbSet w = new UserDbSet();
+
+            var l = w.GetAll();
         }
 
         [Test]

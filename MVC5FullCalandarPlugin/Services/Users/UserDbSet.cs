@@ -1,8 +1,11 @@
-﻿using FireSharp.Interfaces;
+﻿using System.Collections.Generic;
+using FireSharp.Interfaces;
 using FireSharp.Response;
 using MVC5FullCalandarPlugin;
 using MVC5FullCalandarPlugin.Models;
 using MVC5FullCalandarPlugin.Services.Interfaces;
+using NUnit.Framework;
+using NUnit.Framework.Internal;
 using FirebaseConfig = FireSharp.Config.FirebaseConfig;
 
 
@@ -44,6 +47,19 @@ namespace MVC5FullCalandarPlugin.Services.Users
             SetResponse response = Client.Set(userPathPart + UpdateInGoodString(user.Email), user);
         }
 
+        public List<User> GetAll()
+        {
+            var response = Client.Get(userPathPart);
+            var j = System.Web.Helpers.Json.Decode(response.Body);
+
+            foreach (var v in j)
+            {
+                var l = v;
+            }
+            
+            return null;
+        }
+
         public void Delete(string email)
         {
             Client.Delete(userPathPart + UpdateInGoodString(email));
@@ -55,7 +71,6 @@ namespace MVC5FullCalandarPlugin.Services.Users
 
             return response.ResultAs<User>();
         }
-
 
         private string UpdateInGoodString(string str)
         {

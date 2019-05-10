@@ -13,6 +13,7 @@ namespace MVC5FullCalandarPlugin.Services.Interfaces
         void Delete(string email);
         User Get(string email);
         void Update(User user);
+        List<User> GetAll();
 
     }
 }

@@ -1,18 +1,21 @@
-﻿<!DOCTYPE html>
+﻿@model MVC5FullCalandarPlugin.Models.User
+
+<!DOCTYPE html>
 
 <html>
 <head>
     <title>title</title>
 </head>
 <body>
-<div class="z">
-    <input class="btn hovers" type="button" value="Hz"/>
-</div>
+    
+    <div>
+        <input id="ha" class="btn hovers" type="button" value="Hz" />
+        <div id="ha" class="containerWithPanelsEvent">
+                @Html.Partial("_AllEventsPartial");
+
+        </div>
+        <input class="btn hovers" type="button" value="Hz" />
+    </div>
 </body>
 </html>
 
-<style>
-    .z * { width: 100%;}
-        
-    
-</style>

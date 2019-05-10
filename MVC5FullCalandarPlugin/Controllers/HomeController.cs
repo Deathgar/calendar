@@ -15,10 +15,11 @@ namespace MVC5FullCalandarPlugin.Controllers
 {
     public class HomeController : Controller
     {
+
         private IUserDbSet storageUsers;
         public DayEvents dayEvents = new DayEvents();
 
-        public HomeController(IUserDbSet storage)
+        public HomeController(IUserDbSet storage, IUserDbSet fakeStorage = null)
         {
             storageUsers = storage;
         }
@@ -32,6 +33,8 @@ namespace MVC5FullCalandarPlugin.Controllers
             // Info.
             return View();
         }
+        
+
 
         /// <summary>
         /// GET: /Home/GetCalendarData
@@ -124,6 +127,8 @@ namespace MVC5FullCalandarPlugin.Controllers
             {
                 var holy = dayEvents.GetEvent(token, date, id);
                 JsonResult result = new JsonResult();
+                
+                
 
                 try
                 {
