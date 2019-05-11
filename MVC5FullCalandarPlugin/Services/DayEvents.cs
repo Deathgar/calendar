@@ -24,7 +24,7 @@ namespace MVC5FullCalandarPlugin.Services
 
         }
 
-        public string ChangeTimeAndEvent(string title, string description, string time, string date, string token, string id, HttpPostedFileBase image)
+        public string ChangeTimeAndEvent(string title, string description, string time, string date, string token, string id, string status, HttpPostedFileBase image)
         {
             var email = TokenService.getEmailWithToken(token);
             var user = storageUsers.Get(email);
@@ -34,6 +34,7 @@ namespace MVC5FullCalandarPlugin.Services
             holy.Time = time;
             holy.Description = description;
             holy.Title = title;
+            holy.Status = status;
 
             if (image != null)
             {
@@ -54,8 +55,38 @@ namespace MVC5FullCalandarPlugin.Services
             return id;
         }
 
+        public string ChangeTimeAndEventWithEmail(string title, string description, string time, string date, string email, string id, string status, HttpPostedFileBase image)
+        {
+            var user = storageUsers.Get(email);
+            var dat = user.Days.First(x => x.Date == date);
+            var holy = dat.PublicHolidays.First(x => x.Id == id);
 
-        public string AddTimeAndEvent(string title, string description, string time, string date, string token, HttpPostedFileBase image)
+            holy.Time = time;
+            holy.Description = description;
+            holy.Title = title;
+            holy.Status = status;
+
+            if (image != null)
+            {
+                if (holy.Image != null)
+                {
+                    var task = Task.Run(async () => { await FireBaseStorage.UploadImage(holy, image, holy.Image.Id); });
+                    task.Wait();
+                }
+                else
+                {
+                    var task = Task.Run(async () => { await FireBaseStorage.UploadImage(holy, image); });
+                    task.Wait();
+                }
+            }
+
+            storageUsers.Update(user);
+
+            return holy.Image.Url;
+        }
+
+
+        public string AddTimeAndEvent(string title, string description, string time, string date, string token, string status , HttpPostedFileBase image)
         {
             var email = TokenService.getEmailWithToken(token);
             var user = storageUsers.Get(email);
@@ -70,7 +101,8 @@ namespace MVC5FullCalandarPlugin.Services
                 Start_Date = startDate,
                 End_Date = date,
                 Time = time,
-                Title = title
+                Title = title,
+                Status = status
             };
 
             if (image != null)

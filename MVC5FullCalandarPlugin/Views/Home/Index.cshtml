@@ -1,5 +1,7 @@
 ﻿@{
     ViewBag.Title = "ASP.NET MVC5 - Full Calendar JQuery Plugin";
+
+    var statusList = new SelectList(new List<string>(){ "inProgress", "done", "end", "checking", "new"});
 }
 
     <div class="modal fade login" data-backdrop="static" id="myLoginModal">
@@ -19,6 +21,8 @@
                                     <input id="title" class="form-control center" type="text" placeholder="Title" name="title">
                                     <input id="time" class="form-control center" type="text" placeholder="Time" name="time">
                                     <textarea id="description" class="form-control center" rows="3" placeholder="Description" style="color: black"></textarea>
+                                    <br/>
+                                    @Html.DropDownList("name", statusList, new {@class="form-control center"})
                                     
                                     <div id="imageNone" style="display: flex; flex-direction: column; justify-content: center; margin-top: 10px;">
                                         <a >
@@ -95,3 +99,10 @@
         @Html.Partial("_CalendarPartial")
     </section>
 </div>
+
+<script>
+    $("#closeModalWindow").click(function() {
+        console.log($("#name").val());
+    });
+
+</script>

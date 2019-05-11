@@ -93,7 +93,7 @@ namespace MVC5FullCalandarPlugin.Services.Users
                             }
 
                             var tempHoliday = new PublicHoliday() { Id = holiday.Id, Time = holiday.Time, Title = holiday.Title, Description = holiday.Description,
-                                                                    Start_Date = holiday.Start_Date, End_Date = holiday.End_Date, Image = tempImage};
+                                                                    Start_Date = holiday.Start_Date, End_Date = holiday.End_Date, Status = holiday.Status,Image = tempImage};
                             tempNewDay.PublicHolidays.Add(tempHoliday);
                             tempNewDay.Date = holiday.End_Date;
                         }

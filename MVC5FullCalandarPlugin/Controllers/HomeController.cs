@@ -17,11 +17,12 @@ namespace MVC5FullCalandarPlugin.Controllers
     {
 
         private IUserDbSet storageUsers;
-        public DayEvents dayEvents = new DayEvents();
+        public IDayEvent dayEvents;
 
-        public HomeController(IUserDbSet storage, IUserDbSet fakeStorage = null)
+        public HomeController(IUserDbSet storage, IDayEvent dayEvent)
         {
             storageUsers = storage;
+            dayEvents = dayEvent;
         }
 
         /// <summary>
@@ -85,16 +86,10 @@ namespace MVC5FullCalandarPlugin.Controllers
             var date = Request.Form["date"];
             var token = Request.Form["token"];
             var id = Request.Form["id"];
+            var status = Request.Form["status"];
 
-            return dayEvents.ChangeTimeAndEvent(title, description, time, date, token, id, image);
+            return dayEvents.ChangeTimeAndEvent(title, description, time, date, token, id,status, image);
         }
-
-        public string TestChangeTimeAndEvent(string title, string description, string time, string date, string token, string id)
-        {
-
-            return dayEvents.ChangeTimeAndEvent(title, description, time, date, token, id, null);
-        }
-
 
         [HttpPost]
         public string AddTimeAndEvent()
@@ -105,13 +100,9 @@ namespace MVC5FullCalandarPlugin.Controllers
             var time = Request.Form["time"];
             var date = Request.Form["date"];
             var token = Request.Form["token"];
+            var status = Request.Form["status"];
 
-            return dayEvents.AddTimeAndEvent(title, description, time, date, token, image);
-        }
-
-        public string TestAddTimeAndEvent(string title, string description, string time, string date, string token)
-        {
-            return dayEvents.AddTimeAndEvent(title, description, time, date, token, null);
+            return dayEvents.AddTimeAndEvent(title, description, time, date, token, status,image);
         }
 
         [HttpGet]

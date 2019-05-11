@@ -5,7 +5,8 @@ $('#addEvent').click(function () {
 	var time = $('#time').val();
 	var description = $('#description').val();
 	var token = localStorage.getItem("token");
-	var date = $('#hiddenDate').val();
+    var date = $('#hiddenDate').val();
+    var status = $('#name').val();
 
 	var image = $('#imageButton')[0].files[0];
 
@@ -18,7 +19,8 @@ $('#addEvent').click(function () {
 		formData.append("time", time);
 		formData.append("description", description);
 		formData.append("token", token);
-		formData.append("date", date);
+        formData.append("date", date);
+        formData.append("status", status);
 
 
 		$.ajax({
@@ -31,12 +33,35 @@ $('#addEvent').click(function () {
 
 			success: function (request) {
 
+                var color;
+
+                switch (status) {
+                case "done":
+                    color = "green";
+                    break;
+                case "new":
+                    color = "greenyellow";
+                    break;
+                case "inProgress":
+                    color = "blue";
+                    break;
+                case "end":
+                    color = "grey";
+                    break;
+                case "checking":
+                    color = "orange";
+                    break;
+                default:
+                    color = "blue";
+                    break;
+                }
+
 				var event = {
 					title: title,
 					description: description,
 					start: date,
 					allDay: true,
-					backgroundColor: "#9501fc",
+					backgroundColor: color,
 					borderColor: "#494949",
 					id: request
 				};
@@ -63,11 +88,14 @@ $('#changeEvent').click(function () {
 	var title = $('#title').val();
 	var description = $('#description').val();
 	var time = $('#time').val();
-	var id = $('#hiddenInfo').val();
+    var id = $('#hiddenInfo').val();
+    var status = $('#name').val();
 
 	var image = $('#imageButton')[0].files[0];
 
-	var formData = new FormData();
+    var formData = new FormData();
+
+    console.log("dawdawdawdawd awdawdawdawd    : " + status);
 
 
 	formData.append("img", image);
@@ -76,7 +104,8 @@ $('#changeEvent').click(function () {
 	formData.append("description", description);
 	formData.append("token", token);
 	formData.append("date", date);
-	formData.append("id", id);
+    formData.append("id", id);
+    formData.append("status", status);
 
 
 	$.ajax({
@@ -88,14 +117,37 @@ $('#changeEvent').click(function () {
 		data: formData,
 		success: function () {
 
-			$('#calendar').fullCalendar('removeEvents', id);
+            $('#calendar').fullCalendar('removeEvents', id);
+
+            var color;
+
+            switch (status) {
+            case "done":
+                color = "green";
+                break;
+            case "new":
+                color = "greenyellow";
+                break;
+            case "inProgress":
+                color = "blue";
+                break;
+            case "end":
+                color = "grey";
+                break;
+            case "checking":
+                color = "orange";
+                break;
+            default:
+                color = "blue";
+                break;
+            }
 
 			var event = {
 				title: title,
 				description: description,
 				start: date,
 				allDay: true,
-				backgroundColor: "#9501fc",
+				backgroundColor: color,
 				borderColor: "#494949",
 				id: id
 			};

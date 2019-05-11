@@ -1,5 +1,7 @@
 ﻿@model List<MVC5FullCalandarPlugin.Models.User>
-
+@{
+    var statusList = new SelectList(new List<string>() { "inProgress", "done", "end", "checking", "new" });
+}
 <!DOCTYPE html>
 
 <html>
@@ -8,7 +10,7 @@
 </head>
 <body>
 
-    @*<div class="modal fade login" data-backdrop="static" id="myLoginModal">
+    <div class="modal fade login" data-backdrop="static" id="EventPanelInfo">
         <div class="modal-dialog login animated">
             <div class="modal-content">
                 <div class="modal-header">
@@ -22,13 +24,17 @@
                             <div class="error"></div>
                             <div class="form loginBox">
                                 <form method="" action="" accept-charset="UTF-8">
+                                    <div class="id" style="display: none"></div>
+                                    <div class="user" style="display: none"></div>
                                     <input id="title" class="form-control center" type="text" placeholder="Title" name="title">
+                                    <input id="date" class="form-control center" type="text" placeholder="Date" name="date">
                                     <input id="time" class="form-control center" type="text" placeholder="Time" name="time">
                                     <textarea id="description" class="form-control center" rows="3" placeholder="Description" style="color: black"></textarea>
-
+                                    <br/>
+                                    @Html.DropDownList("status", statusList, new {@class="form-control center"})
                                     <div id="imageNone" style="display: flex; flex-direction: column; justify-content: center; margin-top: 10px;">
                                         <a>
-                                            <img id="imageDay" src="https://webref.ru/assets/images/html5-css3/img-04.jpg" style="width: 100%;  height: 100%; object-fit: cover;" />
+                                            <img id="imageDay" src="https://webref.ru/assets/images/html5-css3/img-04.jpg" style="width: 100%; height: 100%; object-fit: cover;"/>
                                         </a>
 
 
@@ -41,49 +47,22 @@
 
                                     <div style="display: flex; flex-direction: row; justify-content: center; margin-top: 10px">
 
-                                        <input id="addEvent" class="btn btn-default btn-login" type="button" value="Add" style=" padding: 6px; text-transform: uppercase; width: 27%;">
-                                        <input id="changeEvent" class="btn btn-default btn-login" type="button" value="Change" style="display: none; padding: 6px; text-transform: uppercase; width: 27%;" />
-                                        <input id="deleteEvent" class="btn btn-default btn-danger" type="button" value="Delete" style=" padding: 6px; text-transform: uppercase; width: 27%;">
-                                        <input id="closeModalWindow" data-dismiss="modal" aria-hidden="true" class="btn btn-default btn-login" type="button" value="Cancel" style=" padding: 6px; text-transform: uppercase; width: 27%;">
+                                        <input id="changeAllEvent" class="btn btn-default btn-login" type="button" value="Change" style="padding: 6px; text-transform: uppercase; width: 27%;"/>
+                                        <input id="deleteAllEvent" class="btn btn-default btn-danger" type="button" value="Delete" style="padding: 6px; text-transform: uppercase; width: 27%;">
+                                        <input id="closeModalWindow" data-dismiss="modal" aria-hidden="true" class="btn btn-default btn-login" type="button" value="Cancel" style="padding: 6px; text-transform: uppercase; width: 27%;">
 
                                     </div>
-                                    <input id="hiddenDate" style="display: none" />
-                                    <input id="hiddenInfo" style="display: none" />
+                                    <input id="hiddenDate" style="display: none"/>
+                                    <input id="hiddenInfo" style="display: none"/>
 
                                 </form>
                             </div>
                         </div>
-                    </div>
-                    <div class="box">
-                        <div class="content registerBox" style="display:none;">
-                            <div class="form">
-                                <form method="" action="" accept-charset="UTF-8">
-                                    <input id="firstName" class="form-control center" type="text" placeholder="Name" name="firstName" />
-                                    <input id="email" class="form-control center" type="text" placeholder="Email" name="email">
-                                    <input id="password" class="form-control center" type="password" placeholder="Password" name="password">
-                                    <input id="password_confirmation" class="form-control center" type="password" placeholder="Repeat Password" name="password_confirmation">
-                                    <input id="registerButton" class="btn btn-default btn-register" type="button" value="Create account">
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="forgot login-footer">
-                        <span>
-                            Looking to
-                            <a href="javascript: showRegisterForm();">create an account</a>
-                            ?
-                        </span>
-                    </div>
-                    <div class="forgot register-footer" style="display:none">
-                        <span>Already have an account?</span>
-                        <a href="javascript: showLoginForm();">Login</a>
                     </div>
                 </div>
             </div>
         </div>
-    </div>*@
+    </div>
 
 <div>
     @Html.Partial("_AllEventsPartial", Model)

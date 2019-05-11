@@ -11,9 +11,12 @@ namespace MVC5FullCalandarPlugin.Services.Interfaces
     public interface IDayEvent
     {
         string ChangeTimeAndEvent(string title, string description, string time, string date, string token,
-            string id, HttpPostedFileBase image);
+            string id, string status, HttpPostedFileBase image);
 
-        string AddTimeAndEvent(string title, string description, string time, string date, string token,
+        string ChangeTimeAndEventWithEmail(string title, string description, string time, string date, string email,
+            string id, string status, HttpPostedFileBase image);
+
+        string AddTimeAndEvent(string title, string description, string time, string date, string token, string status,
             HttpPostedFileBase image);
 
         string GetAllTimeInDay(string date, string token);

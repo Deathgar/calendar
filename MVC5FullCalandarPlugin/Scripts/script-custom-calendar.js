@@ -95,15 +95,38 @@ $(document).ready(function () {
 
 					            $.each(data.PublicHolidays,
 						            function(i, newData) {
-							            
-							            events.push(
+
+                                        var color;
+
+                                        switch (newData.Status) {
+                                        case "done":
+                                            color = "green";
+                                            break;
+                                        case "new":
+                                            color = "greenyellow";
+                                            break;
+                                        case "inProgress":
+                                            color = "blue";
+                                            break;
+                                        case "end":
+                                            color = "grey";
+                                            break;
+                                        case "checking":
+                                            color = "orange";
+                                            break;
+                                        default:
+                                            color = "blue";
+                                            break;
+                                        }
+
+                                        events.push(
 								            {
 									            title: newData.Title,
                                                 description: newData.Description,
 									            start: moment(newData.Start_Date).format('YYYY-MM-DD'),
 									            end: moment(newData.End_Date).format('YYYY-MM-DD'),
 									            allDay: true,
-									            backgroundColor: "#9501fc",
+									            backgroundColor: color,
 									            borderColor: "#494949",
                                                 id: newData.Id
                                             });

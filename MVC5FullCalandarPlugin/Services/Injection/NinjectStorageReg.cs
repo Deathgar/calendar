@@ -14,6 +14,7 @@ namespace MVC5FullCalandarPlugin.Services.Injection
         {
             Bind<IUserDbSet>().To<Storage>();
             Bind<IAuthenication>().To<Authenication>();
+            Bind<IDayEvent>().To<DayEvents>();
         }
     }
 }
