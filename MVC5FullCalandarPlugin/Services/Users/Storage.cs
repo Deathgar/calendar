@@ -38,7 +38,7 @@ namespace MVC5FullCalandarPlugin.Services.Users
 
         public List<User> GetAll()
         {
-            throw new NotImplementedException();
+            return userDbSet.GetAll();
         }
 
         public void Add(User user)

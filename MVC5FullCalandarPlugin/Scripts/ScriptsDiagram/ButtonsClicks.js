@@ -2,32 +2,104 @@
 	AllLines();
 });
 
+$('#Your').click(function() {
+    $('#AllLinesUsers').css({ 'display': 'none' });
+    $('#All').css({ 'display': 'inline-block' });
 
-function AllLines() {
-	console.log("dawdawd");
+    $.ajax({
+        url: urlLines,
+        data:
+        {
+            "token": localStorage.getItem("token")
+        },
+        success: function (req) {
+
+            $(".diagramButtons").empty();
+            FillButtonContainer(false, req);
+            AllLines(false);
+        }
+    });
+
+    
+
+});
+
+$('#AllLinesUsers').click(function() {
+    AllLines(true);
+});
+
+$('#Users').click(function() {
+
+    $('#All').css({ 'display': 'none' });
+    $('#AllLinesUsers').css({ 'display': 'inline-block' });
+
+    $.ajax({
+        url: urlLinesUser,
+        success:
+            function(req) {
+
+                $(".diagramButtons").empty();
+                FillButtonContainer(true, req);
+                AllLines(true);
+            }
+    });
+
+});
+
+function AllLines(isUser) {
     var dates = [];
     var ggz = [];
 
-    $.each($(".diagButton"),
-        function (v, item) {
+    if (!isUser) {
+        $.each($(".diagButton"),
+            function(v, item) {
 
-            var k = {
-                title: $('#' + item.id).val(),
-                dates: $('#' + item.id).data('info').Dates,
-                times: $('#' + item.id).data('info').Times
-            }
-            ggz.push(k);
+                var k = {
+                    title: $('#' + item.id).val(),
+                    dates: $('#' + item.id).data('info').Dates,
+                    times: $('#' + item.id).data('info').Times
+                }
+                ggz.push(k);
 
-            $.each($('#' + item.id).data('info').Dates,
-                function (v, item) {
-                    dates.push(item);
-                });
-        });
+                $.each($('#' + item.id).data('info').Dates,
+                    function(v, item) {
+                        dates.push(item);
+                    });
+            });
+    } else {
+        $.each($(".diagButtonUser"),
+            function(v, item) {
+
+
+                var arrEvents = $('#' + item.id).data('info');
+
+                $.each(arrEvents,
+                    function(j, event) {
+                        var k = {
+                            title: j,
+                            dates: event.Dates,
+                            times: event.Times
+                        }
+
+                        ggz.push(k);
+
+                        $.each(event.Dates,
+                            function(v, date) {
+                                dates.push(date);
+                            });
+                    });
+            });
+
+    }
 
     dates.sort((a, b) => moment(a, 'YYYY-MM-DD') - moment(b, 'YYYY-MM-DD'));
 
-    console.log(dates);
     var tempDate = [];
+
+    console.log("dates:");
+    console.log(ggz);
+    console.log(dates);
+
     for (var i = 0; i < dates.length - 1; i++) {
         var dateArray = getDates(dates[i], dates[i + 1]);
         tempDate = tempDate.concat(dateArray);
@@ -54,7 +126,7 @@ function AllLines() {
                     }
                 }
                 if (!isEquals) {
-                    tempTime.push(0);
+                    tempTime.push(null);
                 }
             }
 
@@ -69,9 +141,11 @@ function AllLines() {
                 "label": item.title,
                 "data": tempTime,
                 borderColor: color,
-                backgroundColor: 'transparent',
+                backgroundColor: transparize(color, 0.8),
+                pointRadius: 8,
+                pointHoverRadius: 10,
                 pointBorderColor: color,
-                pointBackgroundColor: 'transparent'
+                pointBackgroundColor: color
             });
 
         });
@@ -93,6 +167,11 @@ function AllLines() {
             labels: {
                 boxWidth: 1,
                 fontColor: 'black'
+            }
+        },
+        elements: {
+            point: {
+                pointStyle: 'rectRot'
             }
         }
     };

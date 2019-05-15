@@ -19,11 +19,15 @@ namespace MVC5FullCalandarPlugin.Services.Interfaces
         string AddTimeAndEvent(string title, string description, string time, string date, string token, string status,
             HttpPostedFileBase image);
 
+        PublicHoliday AddTimeAndEventWithEmail(string title, string description, string time, string date, string email, string status,
+            HttpPostedFileBase image);
+
         string GetAllTimeInDay(string date, string token);
 
         PublicHoliday GetEvent(string token, string date, string id);
 
         string Delete(string id, string date, string token);
+        void DeleteWithEmail(string id, string date, string email);
 
     }
 }

@@ -53,6 +53,15 @@ namespace MVC5FullCalandarPlugin
                 "~/Scripts/ScriptsDiagram/DocumentScripts.js",
                 "~/Scripts/ScriptsDiagram/ButtonsClicks.js"));
 
+            #region AllEvents
+
+            bundles.Add(new ScriptBundle("~/script/AllEvents").Include(
+                "~/Scripts/ScriptsAllEvents/documentReady.js"));
+            bundles.Add(new StyleBundle("~/style/AllEvents").Include("~/Content/StyleAllEvents/main.css"));
+
+            #endregion
+
+
 
         }
     }

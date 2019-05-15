@@ -52,29 +52,28 @@ namespace MVC5FullCalandarPlugin.Services.Users
         {
             var response = Client.Get(userPathPart);
             var j = System.Web.Helpers.Json.Decode(response.Body);
-
             var users = new List<User>();
 
             foreach (var v in j)
             {
                 var tempUser = new User();
                 var daysList = new List<DayModel>();
-                
+
                 var userJson = v.Value;
 
                 var days = userJson.Days;
 
-        //public string Id { get; set; }
-        //public string Time { get; set; }
-        //public string Title { get; set; }
-        //public string Description { get; set; }
-        //public string Start_Date { get; set; }
-        //public string End_Date { get; set; }
-        //public ImageHTML Image { get; set; }
+                //public string Id { get; set; }
+                //public string Time { get; set; }
+                //public string Title { get; set; }
+                //public string Description { get; set; }
+                //public string Start_Date { get; set; }
+                //public string End_Date { get; set; }
+                //public ImageHTML Image { get; set; }
 
-                if (days != null)
+                foreach (var day in days)
                 {
-                    foreach (var day in days)
+                    if (day != null)
                     {
                         var tempNewDay = new DayModel() {PublicHolidays = new List<PublicHoliday>()};
                         var tempDay = day.PublicHolidays;
@@ -89,23 +88,29 @@ namespace MVC5FullCalandarPlugin.Services.Users
                             }
                             else
                             {
-                                tempImage = new ImageHTML() { Id = holiday.Image.Id, Url = holiday.Image.Url };
+                                tempImage = new ImageHTML() {Id = holiday.Image.Id, Url = holiday.Image.Url};
                             }
 
-                            var tempHoliday = new PublicHoliday() { Id = holiday.Id, Time = holiday.Time, Title = holiday.Title, Description = holiday.Description,
-                                                                    Start_Date = holiday.Start_Date, End_Date = holiday.End_Date, Status = holiday.Status,Image = tempImage};
+                            var tempHoliday = new PublicHoliday()
+                            {
+                                Id = holiday.Id, Time = holiday.Time, Title = holiday.Title,
+                                Description = holiday.Description,
+                                Start_Date = holiday.Start_Date, End_Date = holiday.End_Date, Status = holiday.Status,
+                                Image = tempImage
+                            };
                             tempNewDay.PublicHolidays.Add(tempHoliday);
                             tempNewDay.Date = holiday.End_Date;
                         }
 
                         daysList.Add(tempNewDay);
                     }
-
-                    tempUser.Email = userJson.Email;
-                    tempUser.FirstName = userJson.FirstName;
-                    tempUser.Days = daysList;
-                    users.Add(tempUser);
                 }
+
+                tempUser.Email = userJson.Email;
+                tempUser.FirstName = userJson.FirstName;
+                tempUser.Days = daysList;
+                users.Add(tempUser);
+
             }
 
             return users;
@@ -125,10 +130,16 @@ namespace MVC5FullCalandarPlugin.Services.Users
 
         private string UpdateInGoodString(string str)
         {
+            
             string[] stringsSplitMail = str.Split('@');
-            string[] stringsSplitPoint = stringsSplitMail[1].Split('.');
+            if (stringsSplitMail.Length != 1)
+            {
+                string[] stringsSplitPoint = stringsSplitMail[1].Split('.');
 
-            return stringsSplitMail[0] + "@" + stringsSplitPoint[0] + " " + stringsSplitPoint[1];
+                return stringsSplitMail[0] + "@" + stringsSplitPoint[0] + " " + stringsSplitPoint[1];
+            }
+
+            return str;
         }
 
         

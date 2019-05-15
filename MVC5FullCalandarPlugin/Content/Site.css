@@ -22,3 +22,9 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.btn.diagButton {
+    margin-top: 2px;
+    width: 100%;
+    text-align: left;
+}

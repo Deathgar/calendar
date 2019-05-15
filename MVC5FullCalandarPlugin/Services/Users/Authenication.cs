@@ -28,7 +28,8 @@ namespace MVC5FullCalandarPlugin.Services.Users
         public string Registration(string email, string password, string firstName)
         {
             var auth = new FirebaseAuthProvider(new Firebase.Auth.FirebaseConfig(firebaseString));
-            var regist = auth.CreateUserWithEmailAndPasswordAsync(email, password);
+            var regist = auth.CreateUserWithEmailAndPasswordAsync(email, password).Result;
+
 
             var user = new User
             {

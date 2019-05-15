@@ -10,13 +10,12 @@ function uniq(array) {
 }
 
 function renderCanvas(title, dates, times) {
-    console.log("Shield");
     var speedCanvas = $('#speedChart');
 
     var newArr = [];
 
     Chart.defaults.global.defaultFontFamily = 'Lato';
-    Chart.defaults.global.defaultFontSize = 18;
+    Chart.defaults.global.defaultFontSize = 21;
 
     for (var i = 0; i < dates.length; i++) {
         var p = {
@@ -48,7 +47,7 @@ function renderCanvas(title, dates, times) {
                     if (j === dateArray.length - 1) {
                         tempTime.push(newArr[i + 1].time);
                     } else {
-                        tempTime.push(0);
+                        tempTime.push(null);
                     }
                 }
             }
@@ -59,15 +58,28 @@ function renderCanvas(title, dates, times) {
     }
 
     sortDates = uniq(sortDates);
+    console.log("z:");
     console.log(sortDates);
+    console.log("z:");
     console.log(sortTimes);
+
+    var r = Math.floor(Math.random() * 255);
+    var g = Math.floor(Math.random() * 255);
+    var b = Math.floor(Math.random() * 255);
+    var color = "rgb(" + r + "," + g + "," + b + ")";
 
     var speedData = {
         labels: sortDates,
         datasets: [{
             label: title,
-            data: sortTimes
-        }]
+            data: sortTimes,
+            borderColor: color,
+            backgroundColor: transparize(color, 0.8),
+            pointRadius: 8,
+            pointHoverRadius: 10,
+            pointBorderColor: color,
+            pointBackgroundColor: color
+}]
     };
 
     var chartOptions = {
@@ -77,6 +89,11 @@ function renderCanvas(title, dates, times) {
             labels: {
                 boxWidth: 1,
                 fontColor: 'black'
+            }
+        },
+        elements: {
+            point: {
+                pointStyle: "rectRot"
             }
         }
     };
@@ -97,4 +114,9 @@ function getDates(startDate, stopDate) {
 		currentDate = moment(currentDate).add(1, 'days');
 	}
 	return dateArray;
+}
+
+function transparize(color, opacity) {
+    var alpha = opacity === undefined ? 0.5 : 1 - opacity;
+    return Color(color).alpha(alpha).rgbString();
 }

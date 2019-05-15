@@ -327,6 +327,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\AuthenticationStyle.css" />
+    <Content Include="Content\StyleAllEvents\main.css" />
     <Content Include="Content\sweetalert\bootstrap-sweetalert.png" />
     <Content Include="Content\sweetalert\docs.css" />
     <Content Include="Content\sweetalert\sweet-alert.css" />
@@ -379,6 +380,7 @@
     <Content Include="Scripts\script-custom-calendar.js" />
     <Content Include="Scripts\ScriptsAuthenication\ButtonClicks.js" />
     <Content Include="Scripts\ScriptsAuthenication\ShowOrHideButtons.js" />
+    <Content Include="Scripts\ScriptsAllEvents\documentReady.js" />
     <Content Include="Scripts\ScriptsDiagram\ButtonsClicks.js" />
     <Content Include="Scripts\ScriptsDiagram\DocumentScripts.js" />
     <Content Include="Scripts\ScriptsDiagram\SupportFunctions.js" />

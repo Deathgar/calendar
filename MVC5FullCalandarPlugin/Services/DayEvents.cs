@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Firebase.Storage;
 using MVC5FullCalandarPlugin.Models;
 using MVC5FullCalandarPlugin.Services.Interfaces;
 using MVC5FullCalandarPlugin.Services.Users;
@@ -57,6 +58,7 @@ namespace MVC5FullCalandarPlugin.Services
 
         public string ChangeTimeAndEventWithEmail(string title, string description, string time, string date, string email, string id, string status, HttpPostedFileBase image)
         {
+            string url;
             var user = storageUsers.Get(email);
             var dat = user.Days.First(x => x.Date == date);
             var holy = dat.PublicHolidays.First(x => x.Id == id);
@@ -81,6 +83,7 @@ namespace MVC5FullCalandarPlugin.Services
             }
 
             storageUsers.Update(user);
+
 
             return holy.Image.Url;
         }
@@ -136,7 +139,55 @@ namespace MVC5FullCalandarPlugin.Services
             storageUsers.Update(user);
 
             return id;
-        } 
+        }
+
+        public PublicHoliday AddTimeAndEventWithEmail(string title, string description, string time, string date, string email, string status,
+            HttpPostedFileBase image)
+        {
+            var user = storageUsers.Get(email);
+
+            var startDate = date + " " + "00:00";
+            var id = DateTime.Now.GetHashCode().ToString();
+
+            var eventHoliday = new PublicHoliday
+            {
+                Id = id,
+                Description = description,
+                Start_Date = startDate,
+                End_Date = date,
+                Time = time,
+                Title = title,
+                Status = status
+            };
+
+            if (image != null)
+            {
+
+                var task = Task.Run(async () => { await FireBaseStorage.UploadImage(eventHoliday, image); });
+                task.Wait();
+            }
+
+
+            if (user.Days.Any(x => x.Date == date))
+            {
+                user.Days.First(x => x.Date == date).PublicHolidays.Add(eventHoliday);
+            }
+            else
+            {
+                user.Days.Add(new DayModel()
+                {
+                    Date = date,
+                    PublicHolidays = new List<PublicHoliday>()
+                    {
+                        eventHoliday
+                    }
+                });
+            }
+
+            storageUsers.Update(user);
+
+            return eventHoliday;
+        }
 
         public string GetAllTimeInDay(string date, string token)
         {
@@ -172,6 +223,22 @@ namespace MVC5FullCalandarPlugin.Services
             storageUsers.Update(user);
 
             return id;
+        }
+
+        public async void DeleteWithEmail(string id, string date, string email)
+        {
+            var user = storageUsers.Get(email);
+            var day = user.Days.First(x => x.Date == date);
+            var holy = day.PublicHolidays.First(x => x.Id == id);
+            if (holy.Image != null)
+            {
+               FireBaseStorage.DeleteImage(holy.Image.Id);
+            }
+
+            day.PublicHolidays.Remove(holy);
+
+            storageUsers.Update(user);
+            
         }
     }
 }

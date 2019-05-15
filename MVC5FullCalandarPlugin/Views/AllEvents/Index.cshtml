@@ -7,66 +7,73 @@
 <html>
 <head>
     <title>title</title>
+    @Styles.Render("~/style/AllEvents");
+
 </head>
 <body>
 
-    <div class="modal fade login" data-backdrop="static" id="EventPanelInfo">
-        <div class="modal-dialog login animated">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" align="center">Event</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="box">
-                        <div class="content">
+<div class="modal fade login" data-backdrop="static" id="EventPanelInfo">
+    <div class="modal-dialog login animated">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" align="center">Event</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box">
+                    <div class="content">
 
-                            <div class="error"></div>
-                            <div class="form loginBox">
-                                <form method="" action="" accept-charset="UTF-8">
-                                    <div class="id" style="display: none"></div>
-                                    <div class="user" style="display: none"></div>
-                                    <input id="title" class="form-control center" type="text" placeholder="Title" name="title">
-                                    <input id="date" class="form-control center" type="text" placeholder="Date" name="date">
-                                    <input id="time" class="form-control center" type="text" placeholder="Time" name="time">
-                                    <textarea id="description" class="form-control center" rows="3" placeholder="Description" style="color: black"></textarea>
-                                    <br/>
-                                    @Html.DropDownList("status", statusList, new {@class="form-control center"})
-                                    <div id="imageNone" style="display: flex; flex-direction: column; justify-content: center; margin-top: 10px;">
-                                        <a>
-                                            <img id="imageDay" src="https://webref.ru/assets/images/html5-css3/img-04.jpg" style="width: 100%; height: 100%; object-fit: cover;"/>
-                                        </a>
+                        <div class="error"></div>
+                        <div class="form loginBox">
+                            <form method="" action="" accept-charset="UTF-8">
+                                <div class="id" style="display: none"></div>
+                                <div class="user" style="display: none"></div>
+                                <input id="title" class="form-control center" type="text" placeholder="Title" name="title">
+                                <input id="date" class="form-control center" type="text" placeholder="Date" name="date">
+                                <input id="time" class="form-control center" type="text" placeholder="Time" name="time">
+                                <textarea id="description" class="form-control center" rows="3" placeholder="Description" style="color: black"></textarea>
+                                <br/>
+                                @Html.DropDownList("status", statusList, new {@class="form-control center"})
+                                <div id="imageNone" style="display: flex; flex-direction: column; justify-content: center; margin-top: 10px;">
+                                    <a>
+                                        <img id="imageDay" src="https://webref.ru/assets/images/html5-css3/img-04.jpg" style="width: 100%; height: 100%; object-fit: cover;"/>
+                                    </a>
 
 
-                                        <div id="imageNone" style="display: flex; flex-direction: row; justify-content: center; margin-top: 10px;">
-                                            <label class="btn btn-default center">
-                                                Image <input id="imageButton" type="file" style="display: none">
-                                            </label>
-                                        </div>
+                                    <div id="imageNone" style="display: flex; flex-direction: row; justify-content: center; margin-top: 10px;">
+                                        <label class="btn btn-default center">
+                                            Image <input id="imageButton" type="file" style="display: none">
+                                        </label>
                                     </div>
+                                </div>
 
-                                    <div style="display: flex; flex-direction: row; justify-content: center; margin-top: 10px">
+                                <div style="display: flex; flex-direction: row; justify-content: center; margin-top: 10px">
+                                    
+                                    <input id="addNewAllEvent" class="btn btn-default btn-login" type="button" value="Add" style="padding: 6px; text-transform: uppercase; width: 27%;" />
+                                    <input id="changeAllEvent" class="btn btn-default btn-login" type="button" value="Change" style="padding: 6px; text-transform: uppercase; width: 27%;"/>
+                                    <input id="deleteAllEvent" class="btn btn-default btn-danger" type="button" value="Delete" style="padding: 6px; text-transform: uppercase; width: 27%;">
+                                    <input id="closeModalWindow" data-dismiss="modal" aria-hidden="true" class="btn btn-default btn-login" type="button" value="Cancel" style="padding: 6px; text-transform: uppercase; width: 27%;">
 
-                                        <input id="changeAllEvent" class="btn btn-default btn-login" type="button" value="Change" style="padding: 6px; text-transform: uppercase; width: 27%;"/>
-                                        <input id="deleteAllEvent" class="btn btn-default btn-danger" type="button" value="Delete" style="padding: 6px; text-transform: uppercase; width: 27%;">
-                                        <input id="closeModalWindow" data-dismiss="modal" aria-hidden="true" class="btn btn-default btn-login" type="button" value="Cancel" style="padding: 6px; text-transform: uppercase; width: 27%;">
+                                </div>
+                                <input id="hiddenDate" style="display: none"/>
+                                <input id="hiddenInfo" style="display: none"/>
 
-                                    </div>
-                                    <input id="hiddenDate" style="display: none"/>
-                                    <input id="hiddenInfo" style="display: none"/>
-
-                                </form>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<div>
+</div>
 
 <div>
     @Html.Partial("_AllEventsPartial", Model)
 </div>
 </body>
+@Scripts.Render("~/script/AllEvents");
 </html>
+
 

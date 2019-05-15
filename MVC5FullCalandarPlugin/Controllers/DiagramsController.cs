@@ -25,13 +25,25 @@ namespace MVC5FullCalandarPlugin.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetN(string token)
+        public ActionResult GetUsers()
+        {
+            var users = storage.GetAll();
+            var DicSpecEvMod = new Dictionary<string,SpecialEventModel>();
+
+            foreach (var user in users)
+            {
+                DicSpecEvMod.Add(user.Email,GetSpecialEventModelModel(user));
+            }
+
+            
+
+            return Json(DicSpecEvMod, JsonRequestBehavior.AllowGet);
+        }
+
+        public SpecialEventModel GetSpecialEventModelModel(User user)
         {
             var model = new SpecialEventModel();
 
-            var email = TokenService.getEmailWithToken(token);
-            var user = storage.Get(email);
-            
             var namesEvent = new List<string>();
 
             user.Days.ForEach(
@@ -48,14 +60,14 @@ namespace MVC5FullCalandarPlugin.Controllers
             foreach (var title in arr)
             {
                 days = user.Days.FindAll(x => x.PublicHolidays.Any(e => e.Title == title)).ToList();
-                
+
                 var daysN = new List<string>();
                 var times = new List<string>();
 
                 days.ForEach(x => daysN.Add(x.PublicHolidays.Find(e => e.Title == title).End_Date));
                 days.ForEach(x => times.Add(x.PublicHolidays.Find(e => e.Title == title).Time));
 
-                w.Add(title,new EventsWithEqualsName
+                w.Add(title, new EventsWithEqualsName
                 {
                     Id = i++ + "",
                     Times = times,
@@ -64,6 +76,17 @@ namespace MVC5FullCalandarPlugin.Controllers
                 });
             }
             model.Events = w;
+            
+            return model;
+        }
+
+        [HttpGet]
+        public ActionResult GetN(string token)
+        {
+            var email = TokenService.getEmailWithToken(token);
+            var user = storage.Get(email);
+
+            var model = GetSpecialEventModelModel(user);
 
             JsonResult result = new JsonResult();
 
