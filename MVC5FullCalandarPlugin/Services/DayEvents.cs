@@ -192,8 +192,17 @@ namespace MVC5FullCalandarPlugin.Services
         public string GetAllTimeInDay(string date, string token)
         {
             var user = storageUsers.Get(TokenService.getEmailWithToken(token));
-            string str = user.Days.FirstOrDefault(x => x.Date == date).AllTime;
-            return str;
+            try
+            {
+                string str = user.Days.FirstOrDefault(x => x.Date == date).AllTime;
+                return str;
+            }
+            catch (NullReferenceException e)
+            {
+                return "0";
+            }
+          
+            
         }
 
         public PublicHoliday GetEvent(string token, string date, string id)
@@ -207,18 +216,27 @@ namespace MVC5FullCalandarPlugin.Services
 
         }
 
-        public string Delete(string id, string date, string token)
+        public async Task<string> Delete(string id, string date, string token)
         {
             var email = TokenService.getEmailWithToken(token);
             var user = storageUsers.Get(email);
             var day = user.Days.First(x => x.Date == date);
             var holy = day.PublicHolidays.First(x => x.Id == id);
+
             if (holy.Image != null)
             {
                 FireBaseStorage.DeleteImage(holy.Image.Id);
             }
-
-            day.PublicHolidays.Remove(holy);
+            if (day.PublicHolidays.Count == 1)
+            {
+                user.Days.Remove(day);
+            }
+            else
+            {
+                day.PublicHolidays.Remove(holy);
+            }
+            
+            
 
             storageUsers.Update(user);
 
@@ -228,6 +246,7 @@ namespace MVC5FullCalandarPlugin.Services
         public async void DeleteWithEmail(string id, string date, string email)
         {
             var user = storageUsers.Get(email);
+            user.Days.RemoveAll(x => x == null);
             var day = user.Days.First(x => x.Date == date);
             var holy = day.PublicHolidays.First(x => x.Id == id);
             if (holy.Image != null)
@@ -235,7 +254,14 @@ namespace MVC5FullCalandarPlugin.Services
                FireBaseStorage.DeleteImage(holy.Image.Id);
             }
 
-            day.PublicHolidays.Remove(holy);
+            if (day.PublicHolidays.Count == 1)
+            {
+                user.Days.Remove(day);
+            }
+            else
+            {
+                day.PublicHolidays.Remove(holy);
+            }
 
             storageUsers.Update(user);
             

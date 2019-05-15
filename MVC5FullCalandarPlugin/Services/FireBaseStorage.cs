@@ -55,7 +55,7 @@ namespace MVC5FullCalandarPlugin.Services
                 .Child(id)
                 .DeleteAsync();
 
-            await taskDel;
+            taskDel.Wait();
         }
     }
 }

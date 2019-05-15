@@ -26,7 +26,7 @@ namespace MVC5FullCalandarPlugin.Services.Interfaces
 
         PublicHoliday GetEvent(string token, string date, string id);
 
-        string Delete(string id, string date, string token);
+        Task<string> Delete(string id, string date, string token);
         void DeleteWithEmail(string id, string date, string email);
 
     }

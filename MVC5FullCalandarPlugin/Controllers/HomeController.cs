@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using MVC5FullCalandarPlugin.Services;
 using MVC5FullCalandarPlugin.Services.Interfaces;
@@ -138,9 +139,9 @@ namespace MVC5FullCalandarPlugin.Controllers
         }
 
         [HttpPost]
-        public string Delete(string id, string date, string token)
+        public async Task<string> Delete(string id, string date, string token)
         {
-            return dayEvents.Delete(id, date, token);
+            return dayEvents.Delete(id, date, token).Result;
         }
 
 
